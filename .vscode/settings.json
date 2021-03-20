@@ -10,10 +10,14 @@
         "**/.metadata": true,
         "**/.packages": true,
         "**/android": true,
+        "**/web": true,
         "**/ios": true,
         "**/build": true,
         "**/generated": true,
-        "**/.flutter*": true
+        "**/.flutter*": true,
+        "**/windows": true,
+        "**/linux": true,
+        "**/macos": true,
     },
     "java.configuration.updateBuildConfiguration": "interactive",
     "editor.codeActionsOnSave": {

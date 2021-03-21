@@ -9,8 +9,8 @@ part 'tab_bar_event.dart';
 part 'tab_bar_state.dart';
 
 abstract class TabBarBloc extends Bloc<TabBarEvent, TabBarState> {
-  List<TabItem> _tabs;
-  int _index;
+  late List<TabItem> _tabs;
+  late int _index;
 
   TabBarBloc(List<TabItem> tabs, int initialIndex)
       : super(TabBarInitialState()) {

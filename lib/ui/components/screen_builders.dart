@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:genetic_algorithms/blocs/abstract/tab_bar/tab_bar_bloc.dart';
+import 'package:genetic_algorithms/shared/theme.dart';
 
 class ScreenWithBar {
   static Widget bottom(
@@ -11,7 +12,11 @@ class ScreenWithBar {
       bloc: tabBarBloc,
       builder: (context, state) {
         return Scaffold(
-          body: tabBarBloc.currentTab,
+          body: SafeArea(
+              child: Padding(
+            padding: const EdgeInsets.all(Directions.screenPadding),
+            child: tabBarBloc.currentTab,
+          )),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: tabBarBloc.index,
             items:

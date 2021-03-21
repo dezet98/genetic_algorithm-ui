@@ -12,7 +12,7 @@ abstract class FormBloc extends Bloc<FormEvent, FormState> {
 
   FormBloc(this.fieldBlocs) : super(FormInitialState());
 
-  void onSubmit();
+  Future<void> onSubmit<KeyType>(Map<dynamic, KeyType> values);
 
   @override
   Stream<FormState> mapEventToState(
@@ -21,20 +21,31 @@ abstract class FormBloc extends Bloc<FormEvent, FormState> {
     if (event is FormSubmitEvent) {
       yield FormSubmitInProgressState();
 
-      if (!isValid()) {
+      if (isInvalid) {
         yield FormSubmitFailureState();
       } else {
         try {
-          onSubmit();
+          await onSubmit(_resultsMap);
           yield FormSubmitSuccessState();
         } catch (e) {
           yield FormSubmitFailureState();
         }
       }
+    } else if (event is FormChangeEvent) {
+      yield FormChangeState();
     }
   }
 
-  bool isValid() {
+  Map<dynamic, dynamic> get _resultsMap {
+    Map<dynamic, dynamic> results = {};
+    for (var bloc in fieldBlocs) {
+      if (bloc.key != null) results.putIfAbsent(bloc.key, () => bloc.value);
+    }
+
+    return results;
+  }
+
+  bool get isValid {
     for (var i in fieldBlocs) {
       if (i.isInvalid) {
         return false;
@@ -42,5 +53,15 @@ abstract class FormBloc extends Bloc<FormEvent, FormState> {
     }
 
     return true;
+  }
+
+  bool get isInvalid {
+    for (var i in fieldBlocs) {
+      if (i.isInvalid) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:genetic_algorithms/blocs/abstract/field/field_bloc.dart';
 import 'package:genetic_algorithms/blocs/abstract/form/form_bloc.dart' as own;
 
 import 'custom_scaffold.dart';
@@ -7,47 +8,69 @@ import 'field_bloc_builder.dart';
 
 class FormBlocBuilder extends StatelessWidget {
   final own.FormBloc formBloc;
+  final Widget Function(List<FieldBloc<dynamic>> fieldsBlocs,
+      ButtonStyleButton submitButton, bool formEnable)? formBuilder;
 
-  FormBlocBuilder(this.formBloc);
+  FormBlocBuilder({required this.formBloc, this.formBuilder});
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer(
       bloc: formBloc,
-      listener: formListener,
+      listener: _formListener,
       builder: (context, own.FormState state) {
         return Form(
-          child: Column(
-            children: [...formFields(), submitButton(state)],
-          ),
+          child: formBuilder != null
+              ? formBuilder!(formBloc.fieldBlocs, _submitButton(state),
+                  state is own.FormSubmitInProgressState ? false : true)
+              : ListView.builder(
+                  itemBuilder: (context, index) {
+                    if (index == formBloc.fieldBlocs.length) {
+                      return _submitButton(state);
+                    }
+                    return formFieldTile(
+                      FieldBlocBuilder.getField(
+                          formBloc.fieldBlocs[index],
+                          state is own.FormSubmitInProgressState ? false : true,
+                          context),
+                    );
+                  },
+                  itemCount: formBloc.fieldBlocs.length + 1,
+                ),
           autovalidateMode: AutovalidateMode.always,
+          onChanged: () {
+            formBloc.add(own.FormChangeEvent());
+          },
         );
       },
     );
   }
 
-  List<Widget> formFields() {
-    List<Widget> fields = [];
+  ButtonStyleButton _submitButton(own.FormState state) {
+    if (state is own.FormSubmitInProgressState) {
+      return TextButton(onPressed: () {}, child: CircularProgressIndicator());
+    }
 
-    formBloc.fieldBlocs.forEach((el) {
-      fields.add(FieldBlocBuilder.getField(el));
-    });
-
-    return fields;
-  }
-
-  Widget submitButton(own.FormState state) {
     return TextButton(
-      onPressed: () {
-        formBloc.add(own.FormSubmitEvent());
-      },
-      child: state is own.FormSubmitInProgressState
-          ? CircularProgressIndicator()
-          : Text('Submit'),
+      onPressed: formBloc.isInvalid
+          ? null
+          : () {
+              formBloc.add(own.FormSubmitEvent());
+            },
+      child: Text('Submit'),
     );
   }
 
-  void formListener(BuildContext context, own.FormState state) {
+  static Widget formFieldTile(Widget child) {
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: child,
+      ),
+    );
+  }
+
+  void _formListener(BuildContext context, own.FormState state) {
     if (state is own.FormSubmitFailureState) {
       CustomScaffold.simpleShow(context, "Form failure, try again", "Close");
     } else if (state is own.FormSubmitSuccessState) {

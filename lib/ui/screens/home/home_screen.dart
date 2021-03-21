@@ -12,7 +12,8 @@ class HomeScreen extends StatelessWidget {
     return BlocListener(
       bloc: context.bloc<RouterBloc>(),
       listener: routerBlocListener,
-      child: ScreenWithBar.bottom(context, HomeScreenTabBarBloc()),
+      child:
+          ScreenWithBar.bottom(context, HomeScreenTabBarBloc(), padding: 0.0),
     );
   }
 }

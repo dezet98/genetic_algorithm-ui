@@ -6,15 +6,16 @@ import 'package:genetic_algorithms/shared/theme.dart';
 class ScreenWithBar {
   static Widget bottom(
     BuildContext context,
-    TabBarBloc tabBarBloc,
-  ) {
+    TabBarBloc tabBarBloc, {
+    double padding = Directions.screenPadding,
+  }) {
     return BlocBuilder(
       bloc: tabBarBloc,
       builder: (context, state) {
         return Scaffold(
           body: SafeArea(
               child: Padding(
-            padding: const EdgeInsets.all(Directions.screenPadding),
+            padding: EdgeInsets.all(padding),
             child: tabBarBloc.currentTab,
           )),
           bottomNavigationBar: BottomNavigationBar(

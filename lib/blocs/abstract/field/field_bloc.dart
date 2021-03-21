@@ -8,16 +8,18 @@ part 'field_state.dart';
 
 abstract class FieldBloc<T> extends Bloc<FieldEvent, FieldState> {
   late T? _value;
-  final T initialValue;
+  final dynamic? key;
+  final T? initialValue;
   final String? Function(T?)? validator;
 
-  FieldBloc(this.initialValue, this.validator) : super(FieldInitialState()) {
+  FieldBloc(this.validator, this.key, this.initialValue)
+      : super(FieldInitialState()) {
     _value = initialValue;
   }
 
   T? get value => _value;
-  bool get isValid => validator!(_value) == null;
-  bool get isInvalid => validator!(_value) != null;
+  bool get isValid => validator == null ? true : validator!(_value) == null;
+  bool get isInvalid => validator == null ? false : validator!(_value) != null;
 
   @override
   Stream<FieldState> mapEventToState(

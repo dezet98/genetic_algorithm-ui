@@ -10,3 +10,5 @@ class FormSubmitInProgressState extends FormState {}
 class FormSubmitSuccessState extends FormState {}
 
 class FormSubmitFailureState extends FormState {}
+
+class FormChangeState extends FormState {}

@@ -22,17 +22,17 @@ class LocalDatabaseService {
   }
 
   Future<void> openDatabase() async {
-    if (_database == null) {
-      var path = await _databasePath();
-      if (path != null) {
-        _database = await databaseFactoryFfi.openDatabase(path,
-            options: OpenDatabaseOptions(
-                onCreate: _onCreate, version: _dbModel.version));
-      } else {
-        // EXCEPTION
-        throw Exception();
-      }
+    //if (_database == null) {
+    var path = await _databasePath();
+    if (path != null) {
+      _database = await databaseFactoryFfi.openDatabase(path,
+          options: OpenDatabaseOptions(
+              onCreate: _onCreate, version: _dbModel.version));
+    } else {
+      // EXCEPTION
+      throw Exception();
     }
+    //}
   }
 
   Future<void> closeDatabase() async {
@@ -47,15 +47,19 @@ class LocalDatabaseService {
     }
   }
 
-  Future<void> insert(String columnName, Map<String, Object?> map) async {
-    await _database!.insert(columnName, map);
+  Future<int> insert(String columnName, Map<String, Object?> map) async {
+    await checkIfOpen();
+    return await _database!.insert(columnName, map);
   }
 
   Future<List<Map<String, Object?>>?> queryTable(String tableName) async {
-    if (_database!.isOpen && _database != null) {
-      return await _database?.query(tableName);
-    } else {
-      throw Exception();
+    await checkIfOpen();
+    return await _database?.query(tableName);
+  }
+
+  Future<void> checkIfOpen() async {
+    if (_database == null || _database!.isOpen == false) {
+      return await openDatabase();
     }
   }
 }

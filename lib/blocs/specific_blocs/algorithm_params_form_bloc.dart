@@ -2,6 +2,7 @@ import 'package:genetic_algorithms/blocs/abstract/form/form_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/fields/check_field_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/fields/input_field_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/fields/select_field_bloc.dart';
+import 'package:genetic_algorithms/data/algorithm/connection.dart';
 import 'package:genetic_algorithms/shared/validators.dart';
 
 enum FormItems {
@@ -103,7 +104,7 @@ class AlgorithmParamsFormBloc extends FormBloc {
 
   @override
   Future<void> onSubmit<FormItems>(Map<dynamic, FormItems> results) async {
-    // use algortihm here and save results
-    await Future.delayed(Duration(seconds: 2));
+    var x = Connection().connect();
+    print('success');
   }
 }

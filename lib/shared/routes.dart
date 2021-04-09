@@ -1,0 +1,1 @@
+enum RouteName { HOME_SCREEN, RESULTS_DETAILS }

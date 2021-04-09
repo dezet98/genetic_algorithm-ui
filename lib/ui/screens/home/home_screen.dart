@@ -21,5 +21,7 @@ class HomeScreen extends StatelessWidget {
 void routerBlocListener(BuildContext context, RouterState state) {
   if (state is RouterChangeRouteState) {
     Navigator.push(context, state.route);
+  } else if (state is RouterBackState) {
+    Navigator.pop(context);
   }
 }

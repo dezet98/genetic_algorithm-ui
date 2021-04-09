@@ -4,9 +4,10 @@ part of 'router_bloc.dart';
 abstract class RouterEvent {}
 
 class RouterNavigateToEvent implements RouterEvent {
-  final String destination;
+  final RouteName destination;
+  final Map<String, Object?>? args;
 
-  RouterNavigateToEvent(this.destination);
+  RouterNavigateToEvent(this.destination, {this.args});
 }
 
-class RouterBack implements RouterEvent {}
+class RouterBackEvent implements RouterEvent {}

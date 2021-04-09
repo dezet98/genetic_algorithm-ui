@@ -1,9 +1,7 @@
 part of 'router_bloc.dart';
 
 @immutable
-abstract class RouterState {
-  MaterialPageRoute get route;
-}
+abstract class RouterState {}
 
 class RouterInitialState extends RouterState {
   final MaterialPageRoute<dynamic> route;
@@ -16,3 +14,5 @@ class RouterChangeRouteState extends RouterState {
 
   RouterChangeRouteState(this.route);
 }
+
+class RouterBackState extends RouterState {}

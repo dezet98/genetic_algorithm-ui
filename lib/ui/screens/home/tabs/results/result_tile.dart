@@ -3,7 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/result_delete/result_delete_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/results/results_bloc.dart';
+import 'package:genetic_algorithms/blocs/specific_blocs/router/router_bloc.dart';
 import 'package:genetic_algorithms/shared/extensions.dart';
+import 'package:genetic_algorithms/shared/routes.dart';
 
 class ResultTile extends StatelessWidget {
   @override
@@ -22,7 +24,7 @@ class ResultTile extends StatelessWidget {
             );
           },
         ),
-        onTap: () => goToResultDetails(),
+        onTap: () => goToResultDetails(context),
       ),
     );
   }
@@ -44,7 +46,11 @@ class ResultTile extends StatelessWidget {
     }
   }
 
-  void goToResultDetails() {}
+  void goToResultDetails(BuildContext context) {
+    context
+        .bloc<RouterBloc>()
+        .add(RouterNavigateToEvent(RouteName.RESULTS_DETAILS));
+  }
 
   void deleteItem(BuildContext context) {
     context.bloc<ResultDeleteBloc>().add(ResultDeleteItemEvent());

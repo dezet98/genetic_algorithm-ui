@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:genetic_algorithms/blocs/abstract/field/field_bloc.dart';
 import 'package:genetic_algorithms/blocs/abstract/form/form_bloc.dart' as own;
 
-import 'custom_scaffold.dart';
+import 'custom_scnack_bar.dart';
 import 'field_bloc_builder.dart';
 
 class FormBlocBuilder extends StatelessWidget {
@@ -72,9 +72,9 @@ class FormBlocBuilder extends StatelessWidget {
 
   void _formListener(BuildContext context, own.FormState state) {
     if (state is own.FormSubmitFailureState) {
-      CustomScaffold.simpleShow(context, "Form failure, try again", "Close");
+      CustomSnackBar.simpleShow(context, "Form failure, try again", "Close");
     } else if (state is own.FormSubmitSuccessState) {
-      CustomScaffold.simpleShow(context, "Form Success!!!", "See result");
+      CustomSnackBar.simpleShow(context, "Form Success!!!", "See result");
     }
   }
 }

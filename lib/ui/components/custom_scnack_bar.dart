@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomScaffold {
+class CustomSnackBar {
   static simpleShow(
       BuildContext context, String contentText, String actionLabel) {
     ScaffoldMessenger.of(context).showSnackBar(

@@ -7,12 +7,12 @@ import 'package:meta/meta.dart';
 part 'form_event.dart';
 part 'form_state.dart';
 
-abstract class FormBloc extends Bloc<FormEvent, FormState> {
+abstract class FormBloc<ResultType> extends Bloc<FormEvent, FormState> {
   late List<FieldBloc> fieldBlocs;
 
   FormBloc(this.fieldBlocs) : super(FormInitialState());
 
-  Future<void> onSubmit<KeyType>(Map<dynamic, KeyType> values);
+  ResultType onSubmit(Map<dynamic, Object?> values);
 
   @override
   Stream<FormState> mapEventToState(
@@ -25,8 +25,8 @@ abstract class FormBloc extends Bloc<FormEvent, FormState> {
         yield FormSubmitFailureState();
       } else {
         try {
-          await onSubmit(_resultsMap);
-          yield FormSubmitSuccessState();
+          ResultType result = onSubmit(_resultsMap);
+          yield FormSubmitSuccessState<ResultType>(result);
         } catch (e) {
           yield FormSubmitFailureState();
         }
@@ -36,10 +36,10 @@ abstract class FormBloc extends Bloc<FormEvent, FormState> {
     }
   }
 
-  Map<dynamic, dynamic> get _resultsMap {
-    Map<dynamic, dynamic> results = {};
+  Map<dynamic, Object?> get _resultsMap {
+    Map<dynamic, Object?> results = {};
     for (var bloc in fieldBlocs) {
-      if (bloc.key != null) results.putIfAbsent(bloc.key, () => bloc.value);
+      if (bloc.key != null) results.putIfAbsent(bloc.key!, () => bloc.value);
     }
 
     return results;

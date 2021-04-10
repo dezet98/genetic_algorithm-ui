@@ -7,7 +7,11 @@ class FormInitialState extends FormState {}
 
 class FormSubmitInProgressState extends FormState {}
 
-class FormSubmitSuccessState extends FormState {}
+class FormSubmitSuccessState<ResultType> extends FormState {
+  final ResultType result;
+
+  FormSubmitSuccessState(this.result);
+}
 
 class FormSubmitFailureState extends FormState {}
 

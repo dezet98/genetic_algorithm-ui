@@ -1,4 +1,5 @@
 import 'package:genetic_algorithms/data/models/local_database/database.dart';
+import 'package:genetic_algorithms/data/models/local_database/database_insert.dart';
 import 'package:genetic_algorithms/shared/platforms.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -22,7 +23,6 @@ class LocalDatabaseService {
   }
 
   Future<void> openDatabase() async {
-    //if (_database == null) {
     var path = await _databasePath();
     if (path != null) {
       _database = await databaseFactoryFfi.openDatabase(path,
@@ -32,7 +32,6 @@ class LocalDatabaseService {
       // EXCEPTION
       throw Exception();
     }
-    //}
   }
 
   Future<void> closeDatabase() async {
@@ -47,14 +46,31 @@ class LocalDatabaseService {
     }
   }
 
-  Future<int> insert(String columnName, Map<String, Object?> map) async {
+  Future<int> insertQuery(DatabaseInsertQuery insertQuery) async {
     await checkIfOpen();
-    return await _database!.insert(columnName, map);
+    return await _database!.insert(insertQuery.tableName, insertQuery.map);
   }
+
+  Future<void> insertQueries(List<DatabaseInsertQuery> insertQueries) async {
+    for (var insertQuery in insertQueries) {
+      await this.insertQuery(insertQuery);
+    }
+  }
+
+  // Future<int> insertA(String columnName, Map<String, Object?> map) async {
+  //   await checkIfOpen();
+  //   return await _database!.;
+  // }
 
   Future<List<Map<String, Object?>>?> queryTable(String tableName) async {
     await checkIfOpen();
     return await _database?.query(tableName);
+  }
+
+  Future<List<Map<String, Object?>>?> queryTableByField(
+      String tableName, String field, List<Object?> args) async {
+    await checkIfOpen();
+    return await _database?.query(tableName, where: field, whereArgs: args);
   }
 
   Future<void> checkIfOpen() async {

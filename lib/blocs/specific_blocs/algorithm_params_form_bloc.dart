@@ -2,7 +2,10 @@ import 'package:genetic_algorithms/blocs/abstract/form/form_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/fields/check_field_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/fields/input_field_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/fields/select_field_bloc.dart';
+import 'package:genetic_algorithms/blocs/specific_blocs/result_save/result_save_bloc.dart';
 import 'package:genetic_algorithms/data/algorithm/connection.dart';
+import 'package:genetic_algorithms/data/algorithm/result.dart';
+import 'package:genetic_algorithms/shared/platforms.dart';
 import 'package:genetic_algorithms/shared/validators.dart';
 
 enum FormItems {
@@ -22,8 +25,10 @@ enum FormItems {
   maximization,
 }
 
-class AlgorithmParamsFormBloc extends FormBloc {
-  AlgorithmParamsFormBloc()
+class AlgorithmParamsFormBloc extends FormBloc<Result> {
+  ResultSaveBloc _resultSaveBloc;
+
+  AlgorithmParamsFormBloc(this._resultSaveBloc)
       : super([
           InputFieldBloc<double>(
             key: FormItems.startRange,
@@ -103,8 +108,10 @@ class AlgorithmParamsFormBloc extends FormBloc {
         ]);
 
   @override
-  Future<void> onSubmit<FormItems>(Map<dynamic, FormItems> results) async {
-    var x = Connection().connect();
-    print('success');
+  Result onSubmit(Map<dynamic, Object?> results) {
+    var result = Connection().connect();
+
+    if (PlatformInfo.isNotWeb) _resultSaveBloc.add(ResultSaveToEvent(result));
+    return result;
   }
 }

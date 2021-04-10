@@ -21,12 +21,12 @@ class DbModel {
 
     var columnsLength = dbTable.columns.length;
     for (var i = 0; i < columnsLength; i++) {
-      query += "${dbTable.columns[i].name} ${dbTable.columns[i].type} ";
+      query += "${dbTable.columns[i].name} ${dbTable.columns[i].type}";
 
       if (dbTable.columns[i].isPrimaryKey)
-        query += DbTable.typeToString(DbType.PRIMARY_KEY);
+        query += " " + DbTable.typeToString(DbType.PRIMARY_KEY) + " ";
 
-      query += (i == columnsLength - 1) ? '' : ',';
+      query += (i == columnsLength - 1) ? '' : ', ';
     }
 
     query += ")";

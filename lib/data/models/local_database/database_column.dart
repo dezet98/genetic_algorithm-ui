@@ -16,8 +16,10 @@ class DbColumn {
         return "INTEGER";
       case DbColumnType.TEXT:
         return "TEXT";
+      case DbColumnType.DOUBLE:
+        return "DOUBLE";
     }
   }
 }
 
-enum DbColumnType { STRING, INT, TEXT }
+enum DbColumnType { STRING, INT, TEXT, DOUBLE }

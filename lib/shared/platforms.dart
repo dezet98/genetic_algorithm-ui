@@ -28,17 +28,14 @@ class PlatformInfo {
     return PlatformType.Unknown;
   }
 
-  static bool get isDesktop {
-    return Platform.isMacOS || Platform.isLinux || Platform.isWindows;
-  }
+  static bool get isDesktop =>
+      Platform.isMacOS || Platform.isLinux || Platform.isWindows;
 
-  static bool get isMobile {
-    return Platform.isIOS || Platform.isAndroid;
-  }
+  static bool get isMobile => Platform.isIOS || Platform.isAndroid;
 
-  static bool get isWeb {
-    return kIsWeb;
-  }
+  static bool get isWeb => kIsWeb;
+
+  static bool get isNotWeb => !kIsWeb;
 }
 
 enum PlatformType { Web, iOS, Android, MacOS, Fuchsia, Linux, Windows, Unknown }

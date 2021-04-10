@@ -24,7 +24,7 @@ class DbModel {
       query += "${dbTable.columns[i].name} ${dbTable.columns[i].type}";
 
       if (dbTable.columns[i].isPrimaryKey)
-        query += " " + DbTable.typeToString(DbType.PRIMARY_KEY) + " ";
+        query += " " + DbTable.typeToString(DbType.PRIMARY_KEY);
 
       query += (i == columnsLength - 1) ? '' : ', ';
     }

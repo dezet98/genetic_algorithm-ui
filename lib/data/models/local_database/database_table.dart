@@ -9,7 +9,7 @@ class DbTable {
   static String typeToString(DbType type) {
     switch (type) {
       case DbType.PRIMARY_KEY:
-        return "PRIMARY_KEY";
+        return "PRIMARY KEY";
     }
   }
 

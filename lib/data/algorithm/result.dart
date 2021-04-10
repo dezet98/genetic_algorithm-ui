@@ -74,6 +74,10 @@ class Result {
         name: RESULT_DB_TABLE,
         columns: [
           DbColumn(
+              name: RESULT_DB_RESULT_ID_COLUMN,
+              columnType: DbColumnType.INT,
+              isPrimaryKey: true),
+          DbColumn(
               name: RESULT_DB_TABLE_EPOCHS_AMOUNT_DB_COLUMN,
               columnType: DbColumnType.INT),
           DbColumn(
@@ -121,6 +125,7 @@ class Result {
   }
 
   static const String RESULT_DB_TABLE = "RESULT";
+  static const String RESULT_DB_RESULT_ID_COLUMN = "REWARD_ID";
   static const String RESULT_DB_TABLE_EPOCHS_AMOUNT_DB_COLUMN = "EPOCHS_AMOUNT";
   static const String RESULT_DB_TABLE_POPULATION_SIZE_DB_COLUMN =
       "POPULATION_SIZE";

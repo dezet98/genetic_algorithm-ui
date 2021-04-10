@@ -52,6 +52,7 @@ class LocalDatabaseService {
   }
 
   Future<void> insertQueries(List<DatabaseInsertQuery> insertQueries) async {
+    await checkIfOpen();
     for (var insertQuery in insertQueries) {
       await this.insertQuery(insertQuery);
     }
@@ -67,10 +68,11 @@ class LocalDatabaseService {
     return await _database?.query(tableName);
   }
 
-  Future<List<Map<String, Object?>>?> queryTableByField(
-      String tableName, String field, List<Object?> args) async {
+  Future<List<Map<String, Object?>>?> queryRows(
+      String tableName, String columnName, columnValue) async {
     await checkIfOpen();
-    return await _database?.query(tableName, where: field, whereArgs: args);
+    return await _database
+        ?.query(tableName, where: "$columnName = ?", whereArgs: [columnValue]);
   }
 
   Future<void> checkIfOpen() async {

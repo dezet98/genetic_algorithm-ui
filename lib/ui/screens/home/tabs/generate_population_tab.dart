@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:genetic_algorithms/blocs/abstract/form/form_bloc.dart' as own;
+import 'package:genetic_algorithms/blocs/abstract/local_database_get/local_database_get_bloc.dart';
+import 'package:genetic_algorithms/blocs/abstract/local_database_save/local_database_save_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/algorithm_params_form_bloc.dart';
-import 'package:genetic_algorithms/blocs/specific_blocs/result_save/result_save_bloc.dart';
-import 'package:genetic_algorithms/blocs/specific_blocs/results/results_bloc.dart';
+import 'package:genetic_algorithms/blocs/specific_blocs/result/result_save_bloc.dart';
+import 'package:genetic_algorithms/blocs/specific_blocs/result/results_get_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/router/router_bloc.dart';
 import 'package:genetic_algorithms/data/algorithm/result.dart';
 import 'package:genetic_algorithms/shared/extensions.dart';
@@ -28,11 +30,12 @@ class GeneratePopulationTab extends TabItem {
     );
   }
 
-  void _resultSaveBlocListener(BuildContext context, ResultSaveState state) {
-    if (state is ResultsSaveFailureState) {
+  void _resultSaveBlocListener(
+      BuildContext context, LocalDatabaseSaveState state) {
+    if (state is LocalDatabaseSaveFailureState) {
       CustomSnackBar.simpleShow(context, "Error when save results", "Close");
-    } else if (state is ResultsSaveSuccesfullState) {
-      context.bloc<ResultsBloc>().add(ResultsRefreshEvent());
+    } else if (state is LocalDatabaseSaveSuccesfullState) {
+      context.bloc<ResultsGetBloc>().add(LocalDatabaseGetRefreshEvent());
     }
   }
 

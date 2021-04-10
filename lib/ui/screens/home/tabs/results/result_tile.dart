@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:genetic_algorithms/blocs/specific_blocs/result_delete/result_delete_bloc.dart';
-import 'package:genetic_algorithms/blocs/specific_blocs/results/results_bloc.dart';
+import 'package:genetic_algorithms/blocs/abstract/local_database_delete/local_database_delete_bloc.dart';
+import 'package:genetic_algorithms/blocs/abstract/local_database_get/local_database_get_bloc.dart';
+import 'package:genetic_algorithms/blocs/specific_blocs/result/result_delete_bloc.dart';
+import 'package:genetic_algorithms/blocs/specific_blocs/result/results_get_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/router/router_bloc.dart';
 import 'package:genetic_algorithms/data/models/algorithm_result.dart';
 import 'package:genetic_algorithms/shared/extensions.dart';
 import 'package:genetic_algorithms/shared/routes.dart';
+import 'package:genetic_algorithms/ui/components/custom_scnack_bar.dart';
 import 'package:genetic_algorithms/ui/screens/result_details/result_details_screen.dart';
 
 class ResultTile extends StatelessWidget {
@@ -18,15 +21,15 @@ class ResultTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        title: Text("Wynik numer " + _algorithmResult.resultId.toString()),
+        title: Text("Result number " + _algorithmResult.resultId.toString()),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(_algorithmResult.epochsAmount.toString() + " epok"),
-            Text(_algorithmResult.populationSize.toString() + " osobników"),
-            Text("Czas wykonania: " +
+            Text(_algorithmResult.epochsAmount.toString() + " epochs"),
+            Text(_algorithmResult.populationSize.toString() + " population"),
+            Text("Execution time: " +
                 _algorithmResult.algorithmTime +
-                " sekund"),
+                " seconds"),
           ],
         ),
         trailing: BlocConsumer(
@@ -44,8 +47,8 @@ class ResultTile extends StatelessWidget {
     );
   }
 
-  Widget resultsBuilder(BuildContext context, ResultDeleteState state) {
-    if (state is ResultsDeleteInProgressState) {
+  Widget resultsBuilder(BuildContext context, LocalDatabaseDeleteState state) {
+    if (state is LocalDatabaseDeleteInProgressState) {
       return LinearProgressIndicator();
     }
 
@@ -55,9 +58,13 @@ class ResultTile extends StatelessWidget {
     );
   }
 
-  void resultDeleteBlocListener(BuildContext context, ResultDeleteState state) {
-    if (state is ResultsDeleteSuccesfullState) {
-      context.bloc<ResultsBloc>().add(ResultsRefreshEvent());
+  void resultDeleteBlocListener(
+      BuildContext context, LocalDatabaseDeleteState state) {
+    if (state is LocalDatabaseDeleteSuccesfullState) {
+      context.bloc<ResultsGetBloc>().add(LocalDatabaseGetRefreshEvent());
+    } else if (state is LocalDatabaseDeleteFailureState) {
+      CustomSnackBar.simpleShow(context,
+          " Deleting error: ${state.error}\n ${state.message}", "Close");
     }
   }
 
@@ -74,6 +81,6 @@ class ResultTile extends StatelessWidget {
   void deleteItem(BuildContext context) {
     context
         .bloc<ResultDeleteBloc>()
-        .add(ResultDeleteItemEvent(_algorithmResult));
+        .add(LocalDatabaseDeleteDataEvent(_algorithmResult));
   }
 }

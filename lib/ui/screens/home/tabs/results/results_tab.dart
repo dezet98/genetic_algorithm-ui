@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:genetic_algorithms/blocs/specific_blocs/results/results_bloc.dart';
+import 'package:genetic_algorithms/blocs/abstract/local_database_get/local_database_get_bloc.dart';
+import 'package:genetic_algorithms/blocs/specific_blocs/result/results_get_bloc.dart';
+import 'package:genetic_algorithms/data/models/algorithm_result.dart';
 import 'package:genetic_algorithms/shared/exceptions.dart';
 import 'package:genetic_algorithms/shared/extensions.dart';
 import 'package:genetic_algorithms/ui/components/bar_item.dart';
@@ -11,32 +13,33 @@ class ResultsTab extends TabItem {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer(
-      bloc: context.bloc<ResultsBloc>(),
+      bloc: context.bloc<ResultsGetBloc>(),
       builder: resultsBuilder,
       listener: (context, state) {},
     );
   }
 
-  Widget resultsBuilder(BuildContext context, ResultsState state) {
-    if (state is ResultsLoadingInProgressState) {
+  Widget resultsBuilder(BuildContext context, LocalDatabaseGetState state) {
+    if (state is LocalDatabaseGetInProgressState) {
       return inProgressWidget(state);
-    } else if (state is ResultsInitialState) {
+    } else if (state is LocalDatabaseGetInitialState) {
       return initialWidget(state);
-    } else if (state is ResultsLoadingSuccesfullState)
+    } else if (state is LocalDatabaseGetSuccesfullState<List<AlgorithmResult>>)
       return successWidget(context, state);
 
-    return failureWidget(context, state as ResultsLoadingFailureState);
+    return failureWidget(context, state as LocalDatabaseGetFailureState);
   }
 
-  Widget initialWidget(ResultsInitialState state) {
+  Widget initialWidget(LocalDatabaseGetInitialState state) {
     return Center(child: CircularProgressIndicator());
   }
 
-  Widget inProgressWidget(ResultsLoadingInProgressState state) {
+  Widget inProgressWidget(LocalDatabaseGetInProgressState state) {
     return Center(child: CircularProgressIndicator());
   }
 
-  Widget failureWidget(BuildContext context, ResultsLoadingFailureState state) {
+  Widget failureWidget(
+      BuildContext context, LocalDatabaseGetFailureState state) {
     return Center(
       child: Column(
         children: [
@@ -63,13 +66,13 @@ class ResultsTab extends TabItem {
     }
   }
 
-  Widget successWidget(
-      BuildContext context, ResultsLoadingSuccesfullState state) {
+  Widget successWidget(BuildContext context,
+      LocalDatabaseGetSuccesfullState<List<AlgorithmResult>> state) {
     return Scaffold(
       body: ListView.builder(
-        itemCount: state.algorithmResults.length,
+        itemCount: state.results.length,
         itemBuilder: (context, index) {
-          return ResultTile(state.algorithmResults[index]);
+          return ResultTile(state.results[index]);
         },
       ),
       floatingActionButton: refreshButton(context),
@@ -86,7 +89,7 @@ class ResultsTab extends TabItem {
   }
 
   void refreshAction(BuildContext context) {
-    context.bloc<ResultsBloc>().add(ResultsRefreshEvent());
+    context.bloc<ResultsGetBloc>().add(LocalDatabaseGetRefreshEvent());
   }
 
   @override

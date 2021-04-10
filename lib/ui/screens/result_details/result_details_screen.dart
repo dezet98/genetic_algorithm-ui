@@ -28,7 +28,9 @@ class ResultDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Result Details'),
+        title: Text(
+          "Result Details",
+        ),
       ),
     );
   }

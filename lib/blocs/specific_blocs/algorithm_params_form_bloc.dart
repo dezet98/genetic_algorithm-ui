@@ -1,8 +1,9 @@
 import 'package:genetic_algorithms/blocs/abstract/form/form_bloc.dart';
+import 'package:genetic_algorithms/blocs/abstract/local_database_save/local_database_save_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/fields/check_field_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/fields/input_field_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/fields/select_field_bloc.dart';
-import 'package:genetic_algorithms/blocs/specific_blocs/result_save/result_save_bloc.dart';
+import 'package:genetic_algorithms/blocs/specific_blocs/result/result_save_bloc.dart';
 import 'package:genetic_algorithms/data/algorithm/connection.dart';
 import 'package:genetic_algorithms/data/algorithm/result.dart';
 import 'package:genetic_algorithms/shared/platforms.dart';
@@ -121,7 +122,8 @@ class AlgorithmParamsFormBloc extends FormBloc<Result> {
   Result onSubmit(Map<dynamic, Object?> results) {
     var result = Connection().connect();
 
-    if (PlatformInfo.isNotWeb) _resultSaveBloc.add(ResultSaveToEvent(result));
+    if (PlatformInfo.isNotWeb)
+      _resultSaveBloc.add(LocalDatabaseSaveDataEvent(result));
     return result;
   }
 }

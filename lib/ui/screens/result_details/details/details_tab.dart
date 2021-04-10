@@ -17,22 +17,25 @@ class DetailsTab extends TabItem {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        getPresionPanel(context),
-        BlocBuilder<InfoTabPrecisionBloc, int>(
-          bloc: BlocProvider.of<InfoTabPrecisionBloc>(context),
-          builder: (context, state) {
-            return SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: getTable(state),
-              ),
-            );
-          },
-        ),
-      ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Column(
+        children: [
+          getPresionPanel(context),
+          BlocBuilder<InfoTabPrecisionBloc, int>(
+            bloc: BlocProvider.of<InfoTabPrecisionBloc>(context),
+            builder: (context, state) {
+              return SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: getTable(state),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 

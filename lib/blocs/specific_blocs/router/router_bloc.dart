@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:genetic_algorithms/shared/exceptions.dart';
 import 'package:genetic_algorithms/shared/routes.dart';
+import 'package:genetic_algorithms/ui/screens/chart/chart_screen.dart';
 import 'package:genetic_algorithms/ui/screens/home/home_screen.dart';
 import 'package:genetic_algorithms/ui/screens/result_details/result_details_screen.dart';
 import 'package:meta/meta.dart';
@@ -53,6 +54,9 @@ class RouterBloc extends Bloc<RouterEvent, RouterState> {
         case RouteName.RESULTS_DETAILS:
           ResultDetailsScreenArgs args = routeArgs as ResultDetailsScreenArgs;
           return ResultDetailsScreen(args: args);
+        case RouteName.CHART_SCREEN:
+          ChartScreenArgs args = routeArgs as ChartScreenArgs;
+          return ChartScreen(args);
       }
     } catch (e) {
       throw RouterException(RouterError.ARGS_ERROR, e.toString());

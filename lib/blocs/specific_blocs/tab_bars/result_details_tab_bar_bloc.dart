@@ -11,7 +11,11 @@ class ResultDetailsTabBarBloc extends TabBarBloc {
       : super(
           [
             InfoTab(args.algorithmResult),
-            ChartsTab(),
+            ChartsTab(
+              averageInEpochs: args.averageInEpochs,
+              bestInEpochs: args.bestInEpochs,
+              standardDeviations: args.standardDeviations,
+            ),
             DetailsTab(
               averageInEpochs: args.averageInEpochs,
               bestInEpochs: args.bestInEpochs,

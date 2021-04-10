@@ -67,6 +67,8 @@ class ResultTile extends StatelessWidget {
   }
 
   void deleteItem(BuildContext context) {
-    context.bloc<ResultDeleteBloc>().add(ResultDeleteItemEvent());
+    context
+        .bloc<ResultDeleteBloc>()
+        .add(ResultDeleteItemEvent(_algorithmResult));
   }
 }

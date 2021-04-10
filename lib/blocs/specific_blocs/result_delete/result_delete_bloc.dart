@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:genetic_algorithms/data/models/algorithm_result.dart';
 import 'package:genetic_algorithms/data/services/local_database_service.dart';
 import 'package:genetic_algorithms/shared/exceptions.dart';
 import 'package:meta/meta.dart';
@@ -18,17 +19,22 @@ class ResultDeleteBloc extends Bloc<ResultDeleteEvent, ResultDeleteState> {
     ResultDeleteEvent event,
   ) async* {
     if (event is ResultDeleteItemEvent) {
-      yield* mapResultDeleteItemEvent();
+      yield* mapResultDeleteItemEvent(event._algorithmResult);
     }
   }
 
-  Stream<ResultDeleteState> mapResultDeleteItemEvent() async* {
+  Stream<ResultDeleteState> mapResultDeleteItemEvent(
+      AlgorithmResult algorithmResult) async* {
     try {
       yield ResultsDeleteInProgressState();
 
-      // Implement delete
-
-      yield ResultsDeleteSuccesfullState();
+      if (algorithmResult.resultId != null) {
+        await _localDatabaseService.delete(AlgorithmResult.dbTable.name,
+            AlgorithmResult.dbResultId.name, algorithmResult.resultId);
+        yield ResultsDeleteSuccesfullState();
+      } else {
+        yield ResultsDeleteFailureState(LocalDatabaseError.DELETE_ERROR, "");
+      }
     } catch (e) {
       if (e is LocalDatabaseFailureException) {
         yield ResultsDeleteFailureState(e.localDatabaseError, e.message);

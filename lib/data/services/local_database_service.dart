@@ -36,7 +36,7 @@ class LocalDatabaseService {
 
   Future<void> closeDatabase() async {
     if (_database!.isOpen) {
-      await _database?.close();
+      await _database!.close();
     }
   }
 
@@ -73,16 +73,22 @@ class LocalDatabaseService {
     return await _database!.transaction(action);
   }
 
-  Future<List<Map<String, Object?>>?> queryTable(String tableName) async {
+  Future<List<Map<String, Object?>>> queryTable(String tableName) async {
     await checkIfOpen();
-    return await _database?.query(tableName);
+    return await _database!.query(tableName);
   }
 
-  Future<List<Map<String, Object?>>?> queryRows(
+  Future<List<Map<String, Object?>>> queryRows(
       String tableName, String columnName, columnValue) async {
     await checkIfOpen();
-    return await _database
-        ?.query(tableName, where: "$columnName = ?", whereArgs: [columnValue]);
+    return await _database!
+        .query(tableName, where: "$columnName = ?", whereArgs: [columnValue]);
+  }
+
+  Future<int?> delete(String tableName, String columnName, columnValue) async {
+    await checkIfOpen();
+    return await _database!
+        .delete(tableName, where: "$columnName = ?", whereArgs: [columnValue]);
   }
 
   Future<void> checkIfOpen() async {

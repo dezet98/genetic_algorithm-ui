@@ -6,23 +6,34 @@ import 'result.dart';
 import 'selection.dart';
 
 class Connection {
-  Connection();
-
-  Result connect() {
+  Result connect(
+      double startRange,
+      double endRange,
+      int populationAmount,
+      int epochsAmount,
+      double selectionProbability,
+      double crossProbability,
+      double mutationProbability,
+      double inversionProbability,
+      int eliteStrategyAmount,
+      bool gradeStrategy,
+      String selection,
+      String cross,
+      String mutation) {
     return GeneticAlgorithmCreate(
-      startRange: -10,
-      endRange: 10,
-      populationAmount: 10,
-      epochsAmount: 10,
-      selectionProbability: 0.5,
-      crossProbability: 0.2,
-      mutationProbability: 0.2,
-      inversionProbability: 0.2,
-      eliteStrategyAmount: 1,
-      gradeStrategy: GradeStrategy.MAXIMAL_GRADE,
-      selection: Selection.TOURNAMENT,
-      cross: Cross.HOMOGENEOUS_CROSS,
-      mutation: Mutation.EDGE_MUTATION,
+      startRange: startRange,
+      endRange: endRange,
+      populationAmount: populationAmount,
+      epochsAmount: epochsAmount,
+      selectionProbability: selectionProbability,
+      crossProbability: crossProbability,
+      mutationProbability: mutationProbability,
+      inversionProbability: inversionProbability,
+      eliteStrategyAmount: eliteStrategyAmount,
+      gradeStrategy: gradeStrategy ? 'maximal_grade' : 'minimal_grade',
+      selection: 'best',
+      cross: cross,
+      mutation: mutation,
     ).createGeneticAlgorithm();
   }
 }

@@ -14,7 +14,8 @@ class LocalDatabaseService {
 
   Future<String?> _databasePath() async {
     if (PlatformInfo.isDesktop) {
-      return join((await databaseFactory.getDatabasesPath()), _dbModel.name);
+      sqfliteFfiInit();
+      return join((await databaseFactoryFfi.getDatabasesPath()), _dbModel.name);
     } else if (PlatformInfo.isMobile) {
       return join(
           ((await getApplicationDocumentsDirectory()).path), _dbModel.name);

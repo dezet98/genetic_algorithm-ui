@@ -9,10 +9,19 @@ class RouterInitialState extends RouterState {
   RouterInitialState(this.route);
 }
 
-class RouterChangeRouteState extends RouterState {
+class RouterChangeRouteInProgressState extends RouterState {}
+
+class RouterChangeRouteSuccessState extends RouterState {
   final MaterialPageRoute<dynamic> route;
 
-  RouterChangeRouteState(this.route);
+  RouterChangeRouteSuccessState(this.route);
+}
+
+class RouterChangeRouteFailureState extends RouterState {
+  final RouterError routerError;
+  final String? message;
+
+  RouterChangeRouteFailureState(this.routerError, {this.message});
 }
 
 class RouterBackState extends RouterState {}

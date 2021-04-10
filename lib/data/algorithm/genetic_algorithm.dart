@@ -1,4 +1,4 @@
-import 'dart:io' show File, FileMode, Platform;
+import 'dart:io' show File, FileMode;
 import 'dart:math';
 
 import 'cross.dart';

@@ -4,12 +4,11 @@ import 'package:genetic_algorithms/data/local_database/database_model.dart';
 import 'package:genetic_algorithms/data/local_database/database_table.dart';
 
 class BestInEpoch extends DatabaseModel {
-  int resultId;
+  int? resultId;
   int epoch;
   double value;
 
-  BestInEpoch(
-      {required this.resultId, required this.epoch, required this.value});
+  BestInEpoch({this.resultId, required this.epoch, required this.value});
 
   static DbTable dbTable = DbTable(name: "BEST_IN_EPOCH", columns: _dbColumns);
 

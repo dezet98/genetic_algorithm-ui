@@ -32,7 +32,7 @@ class ResultsBloc extends Bloc<ResultsEvent, ResultsState> {
       List<Map<String, Object?>>? queries =
           await _localDatabaseService.queryTable(AlgorithmResult.dbTable.name);
 
-      List<AlgorithmResult> algorithmResults = List.generate(queries!.length,
+      List<AlgorithmResult> algorithmResults = List.generate(queries.length,
           (index) => AlgorithmResult.fromDataBase(queries[index]));
 
       yield ResultsLoadingSuccesfullState(algorithmResults);

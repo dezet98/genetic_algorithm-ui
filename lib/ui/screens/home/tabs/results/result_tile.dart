@@ -7,6 +7,7 @@ import 'package:genetic_algorithms/blocs/specific_blocs/router/router_bloc.dart'
 import 'package:genetic_algorithms/data/models/algorithm_result.dart';
 import 'package:genetic_algorithms/shared/extensions.dart';
 import 'package:genetic_algorithms/shared/routes.dart';
+import 'package:genetic_algorithms/ui/screens/result_details/result_details_screen.dart';
 
 class ResultTile extends StatelessWidget {
   final AlgorithmResult _algorithmResult;
@@ -61,9 +62,13 @@ class ResultTile extends StatelessWidget {
   }
 
   void goToResultDetails(BuildContext context) {
-    context
-        .bloc<RouterBloc>()
-        .add(RouterNavigateToEvent(RouteName.RESULTS_DETAILS));
+    context.bloc<RouterBloc>().add(
+          RouterNavigateToEvent(
+            RouteName.RESULTS_DETAILS,
+            routeArgs:
+                ResultDetailsScreenArgs(algorithmResult: _algorithmResult),
+          ),
+        );
   }
 
   void deleteItem(BuildContext context) {

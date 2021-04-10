@@ -4,12 +4,11 @@ import 'package:genetic_algorithms/data/local_database/database_model.dart';
 import 'package:genetic_algorithms/data/local_database/database_table.dart';
 
 class StandardDeviation extends DatabaseModel {
-  int resultId;
+  int? resultId;
   int epoch;
   double value;
 
-  StandardDeviation(
-      {required this.resultId, required this.epoch, required this.value});
+  StandardDeviation({this.resultId, required this.epoch, required this.value});
 
   static DbTable dbTable =
       DbTable(name: "STANDARD_DEVIATION", columns: _dbColumns);

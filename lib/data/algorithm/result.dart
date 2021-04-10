@@ -24,7 +24,7 @@ class Result {
       populationSize: populationSize,
       algorithmTime: algorithmTime);
 
-  List<BestInEpoch> bestInEpochs(int resultId) {
+  List<BestInEpoch> bestInEpochs(int? resultId) {
     return List.generate(
       bestInEpoch.length,
       (index) => BestInEpoch(
@@ -35,7 +35,7 @@ class Result {
     );
   }
 
-  List<AverageInEpoch> averageInEpochs(int resultId) {
+  List<AverageInEpoch> averageInEpochs(int? resultId) {
     return List.generate(
       bestInEpoch.length,
       (index) => AverageInEpoch(
@@ -46,7 +46,7 @@ class Result {
     );
   }
 
-  List<StandardDeviation> standardDeviations(int resultId) {
+  List<StandardDeviation> standardDeviations(int? resultId) {
     return List.generate(
       bestInEpoch.length,
       (index) => StandardDeviation(

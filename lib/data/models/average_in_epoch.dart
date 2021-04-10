@@ -4,12 +4,11 @@ import 'package:genetic_algorithms/data/local_database/database_model.dart';
 import 'package:genetic_algorithms/data/local_database/database_table.dart';
 
 class AverageInEpoch extends DatabaseModel {
-  int resultId;
+  int? resultId;
   int epoch;
   double value;
 
-  AverageInEpoch(
-      {required this.resultId, required this.epoch, required this.value});
+  AverageInEpoch({this.resultId, required this.epoch, required this.value});
 
   static DbTable dbTable =
       DbTable(name: "AVERAGE_IN_EPOCH", columns: _dbColumns);

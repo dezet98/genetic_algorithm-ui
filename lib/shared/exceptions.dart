@@ -4,9 +4,21 @@ enum LocalDatabaseError {
   DELETE_ERROR
 }
 
+enum RouterError {
+  UNDEFINED,
+  ARGS_ERROR,
+}
+
 class LocalDatabaseFailureException implements Exception {
   LocalDatabaseError localDatabaseError;
   String? message;
 
   LocalDatabaseFailureException(this.localDatabaseError, this.message);
+}
+
+class RouterException implements Exception {
+  RouterError routerError;
+  String? message;
+
+  RouterException(this.routerError, this.message);
 }

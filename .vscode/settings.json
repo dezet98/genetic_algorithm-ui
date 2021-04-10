@@ -16,7 +16,7 @@
         "**/generated": true,
         "**/.flutter*": true,
         "**/windows": true,
-        "**/linux": true,
+        "**/linux": false,
         "**/macos": true,
     },
     "java.configuration.updateBuildConfiguration": "interactive",

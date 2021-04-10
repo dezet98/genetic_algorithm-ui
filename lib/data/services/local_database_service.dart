@@ -1,5 +1,6 @@
 import 'package:genetic_algorithms/data/local_database/database.dart';
 import 'package:genetic_algorithms/data/local_database/database_insert.dart';
+import 'package:genetic_algorithms/shared/exceptions.dart';
 import 'package:genetic_algorithms/shared/platforms.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,7 +15,8 @@ class LocalDatabaseService {
 
   Future<String?> _databasePath() async {
     if (PlatformInfo.isDesktop) {
-      return join((await databaseFactory.getDatabasesPath()), _dbModel.name);
+      sqfliteFfiInit();
+      return join((await databaseFactoryFfi.getDatabasesPath()), _dbModel.name);
     } else if (PlatformInfo.isMobile) {
       return join(
           ((await getApplicationDocumentsDirectory()).path), _dbModel.name);
@@ -30,7 +32,10 @@ class LocalDatabaseService {
               onCreate: _onCreate, version: _dbModel.version));
     } else {
       // EXCEPTION
-      throw Exception();
+      throw LocalDatabaseFailureException(
+        LocalDatabaseError.OPEN_DATABASE_ERROR,
+        "",
+      );
     }
   }
 

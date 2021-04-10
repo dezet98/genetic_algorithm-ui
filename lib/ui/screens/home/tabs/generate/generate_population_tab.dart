@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:genetic_algorithms/blocs/abstract/form/form_bloc.dart' as own;
 import 'package:genetic_algorithms/blocs/abstract/local_database_get/local_database_get_bloc.dart';
 import 'package:genetic_algorithms/blocs/abstract/local_database_save/local_database_save_bloc.dart';
-import 'package:genetic_algorithms/blocs/specific_blocs/algorithm_params_form_bloc.dart';
+import 'package:genetic_algorithms/blocs/specific_blocs/forms/algorithm_params_form_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/result/result_save_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/result/results_get_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/router/router_bloc.dart';

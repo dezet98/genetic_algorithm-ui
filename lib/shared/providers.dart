@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:genetic_algorithms/blocs/specific_blocs/algorithm_params_form_bloc.dart';
+import 'package:genetic_algorithms/blocs/specific_blocs/forms/algorithm_params_form_bloc.dart';
+import 'package:genetic_algorithms/blocs/specific_blocs/info_tab_precision_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/result/result_delete_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/result/result_save_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/result/results_get_bloc.dart';
@@ -31,6 +32,7 @@ List<BlocProvider> getMainBlocProviders() => [
           context.bloc<ResultSaveBloc>(),
         ),
       ),
+      BlocProvider<InfoTabPrecisionBloc>(create: (_) => InfoTabPrecisionBloc()),
     ];
 
 List<RepositoryProvider> getMainRepositoryProviders() => [

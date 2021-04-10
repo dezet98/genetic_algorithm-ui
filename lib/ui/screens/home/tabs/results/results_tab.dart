@@ -63,6 +63,8 @@ class ResultsTab extends TabItem {
         return "GET_FROM_DATABASE_CAST_ERROR";
       case LocalDatabaseError.DELETE_ERROR:
         return "DELETE_ERROR";
+      default:
+        return "UNDEFINED";
     }
   }
 

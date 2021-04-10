@@ -1,4 +1,4 @@
-enum LocalDatabaseError { UNDEFINED }
+enum LocalDatabaseError { UNDEFINED, GET_FROM_DATABASE_CAST_ERROR }
 
 class LocalDatabaseFailureException implements Exception {
   LocalDatabaseError localDatabaseError;

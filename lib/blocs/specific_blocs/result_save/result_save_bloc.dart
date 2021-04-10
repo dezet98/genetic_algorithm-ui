@@ -2,6 +2,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:genetic_algorithms/data/algorithm/result.dart';
+import 'package:genetic_algorithms/data/models/algorithm_result.dart';
+import 'package:genetic_algorithms/data/models/average_in_epoch.dart';
+import 'package:genetic_algorithms/data/models/best_in_epoch.dart';
+import 'package:genetic_algorithms/data/models/standard_deviation.dart';
 import 'package:genetic_algorithms/data/services/local_database_service.dart';
 import 'package:genetic_algorithms/shared/exceptions.dart';
 import 'package:meta/meta.dart';
@@ -26,14 +30,19 @@ class ResultSaveBloc extends Bloc<ResultSaveEvent, ResultSaveState> {
   Stream<ResultSaveState> mapResultSaveToEvent(Result result) async* {
     try {
       yield ResultsSaveInProgressState();
-      var resultId =
-          await _localDatabaseService.insertQuery(result.resultTableInsert());
-      await _localDatabaseService
-          .insertQueries(result.bestEpochInsert(resultId));
-      await _localDatabaseService
-          .insertQueries(result.averageInEpochInsert(resultId));
-      await _localDatabaseService
-          .insertQueries(result.standardDeviationInsert(resultId));
+      // _localDatabaseService.transaction((Transaction t) => save(t, result));
+      var resultId = await _localDatabaseService
+          .insertQuery(AlgorithmResult.saveToDatabase(result.algorithmResult));
+      await _localDatabaseService.insertQueries(
+        BestInEpoch.saveMultiToDatabase(result.bestInEpochs(resultId)),
+      );
+      await _localDatabaseService.insertQueries(
+        AverageInEpoch.saveMultiToDatabase(result.averageInEpochs(resultId)),
+      );
+      await _localDatabaseService.insertQueries(
+        StandardDeviation.saveMultiToDatabase(
+            result.standardDeviations(resultId)),
+      );
       yield ResultsSaveSuccesfullState();
     } catch (e) {
       if (e is LocalDatabaseFailureException) {
@@ -42,4 +51,8 @@ class ResultSaveBloc extends Bloc<ResultSaveEvent, ResultSaveState> {
       yield ResultsSaveFailureState(LocalDatabaseError.UNDEFINED, e.toString());
     }
   }
+
+  // Future<void> save(Transaction transaction, Result result) async {
+
+  // }
 }

@@ -1,5 +1,5 @@
-import 'package:genetic_algorithms/data/models/local_database/database.dart';
-import 'package:genetic_algorithms/data/models/local_database/database_insert.dart';
+import 'package:genetic_algorithms/data/local_database/database.dart';
+import 'package:genetic_algorithms/data/local_database/database_insert.dart';
 import 'package:genetic_algorithms/shared/platforms.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -42,7 +42,7 @@ class LocalDatabaseService {
 
   void _onCreate(Database db, int version) async {
     for (String query in _dbModel.createTableQueries()) {
-      db.execute(query);
+      await db.execute(query);
     }
   }
 
@@ -58,10 +58,20 @@ class LocalDatabaseService {
     }
   }
 
-  // Future<int> insertA(String columnName, Map<String, Object?> map) async {
-  //   await checkIfOpen();
-  //   return await _database!.;
-  // }
+  Future<List<Object?>> batchInsert(
+      List<DatabaseInsertQuery> insertQueries) async {
+    await checkIfOpen();
+    var batch = _database!.batch();
+    for (var insertQuery in insertQueries) {
+      batch.insert(insertQuery.tableName, insertQuery.map);
+    }
+    return await batch.commit();
+  }
+
+  Future<T> transaction<T>(Future<T> Function(Transaction) action) async {
+    await checkIfOpen();
+    return await _database!.transaction(action);
+  }
 
   Future<List<Map<String, Object?>>?> queryTable(String tableName) async {
     await checkIfOpen();

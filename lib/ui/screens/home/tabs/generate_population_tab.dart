@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:genetic_algorithms/blocs/abstract/form/form_bloc.dart' as own;
 import 'package:genetic_algorithms/blocs/specific_blocs/algorithm_params_form_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/result_save/result_save_bloc.dart';
+import 'package:genetic_algorithms/blocs/specific_blocs/results/results_bloc.dart';
 import 'package:genetic_algorithms/shared/extensions.dart';
 import 'package:genetic_algorithms/ui/components/bar_item.dart';
 import 'package:genetic_algorithms/ui/components/custom_scnack_bar.dart';
@@ -35,6 +36,7 @@ class GeneratePopulationTab extends TabItem {
     if (state is own.FormSubmitFailureState) {
       CustomSnackBar.simpleShow(context, "Form failure, try again", "Close");
     } else if (state is own.FormSubmitSuccessState) {
+      context.bloc<ResultsBloc>().add(ResultsRefreshEvent());
       CustomSnackBar.simpleShow(context, "Form Success!!!", "Ok");
     }
   }

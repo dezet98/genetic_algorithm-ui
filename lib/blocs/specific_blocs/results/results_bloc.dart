@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:genetic_algorithms/data/algorithm/result.dart';
+import 'package:genetic_algorithms/data/models/algorithm_result.dart';
 import 'package:genetic_algorithms/data/services/local_database_service.dart';
 import 'package:genetic_algorithms/shared/exceptions.dart';
 import 'package:meta/meta.dart';
@@ -28,25 +28,14 @@ class ResultsBloc extends Bloc<ResultsEvent, ResultsState> {
   Stream<ResultsState> mapResultsRefreshEvent() async* {
     try {
       yield ResultsLoadingInProgressState();
-      var x = await _localDatabaseService.queryTable(Result.RESULT_DB_TABLE);
-      print(x);
-      var x2 = await _localDatabaseService.queryRows(
-          Result.BEST_IN_EPOCH_DB_TABLE,
-          Result.BEST_IN_EPOCH_DB_TABLE_RESULT_ID_DB_COLUMN,
-          1);
-      print(x2);
-      var x3 = await _localDatabaseService.queryRows(
-          Result.AVERAGE_IN_EPOCH_DB_TABLE,
-          Result.AVERAGE_IN_EPOCH_DB_TABLE_RESULT_ID_DB_COLUMN,
-          2);
-      print(x3);
-      var x4 = await _localDatabaseService.queryRows(
-          Result.STANDARD_DEVIATION_DB_TABLE,
-          Result.STANDARD_DEVIATION_DB_TABLE_RESULT_ID_DB_COLUMN,
-          3);
-      print(x4);
-      await _localDatabaseService.closeDatabase();
-      yield ResultsLoadingSuccesfullState();
+
+      List<Map<String, Object?>>? queries =
+          await _localDatabaseService.queryTable(AlgorithmResult.dbTable.name);
+
+      List<AlgorithmResult> algorithmResults = List.generate(queries!.length,
+          (index) => AlgorithmResult.fromDataBase(queries[index]));
+
+      yield ResultsLoadingSuccesfullState(algorithmResults);
     } catch (e) {
       if (e is LocalDatabaseFailureException) {
         yield ResultsLoadingFailureState(e.localDatabaseError, e.message);

@@ -1,12 +1,13 @@
 class DbColumn {
   final String name;
   final DbColumnType columnType;
-  final isPrimaryKey;
+  final bool isPrimaryKey;
 
-  DbColumn(
-      {required this.name,
-      required this.columnType,
-      this.isPrimaryKey = false});
+  DbColumn({
+    required this.name,
+    required this.columnType,
+    this.isPrimaryKey = false,
+  });
 
   String get type {
     switch (columnType) {

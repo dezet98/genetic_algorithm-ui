@@ -56,6 +56,8 @@ class ResultsTab extends TabItem {
     switch (error) {
       case LocalDatabaseError.UNDEFINED:
         return "UNDEFINED";
+      case LocalDatabaseError.GET_FROM_DATABASE_CAST_ERROR:
+        return "GET_FROM_DATABASE_CAST_ERROR";
     }
   }
 
@@ -63,9 +65,9 @@ class ResultsTab extends TabItem {
       BuildContext context, ResultsLoadingSuccesfullState state) {
     return Scaffold(
       body: ListView.builder(
-        itemCount: 3,
+        itemCount: state.algorithmResults.length,
         itemBuilder: (context, index) {
-          return ResultTile();
+          return ResultTile(state.algorithmResults[index]);
         },
       ),
       floatingActionButton: refreshButton(context),

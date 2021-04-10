@@ -17,7 +17,7 @@ class DbModel {
   }
 
   static String createTable(DbTable dbTable) {
-    String query = "CREATE TABLE ${dbTable.name}(";
+    String query = "CREATE TABLE ${dbTable.name} (";
 
     var columnsLength = dbTable.columns.length;
     for (var i = 0; i < columnsLength; i++) {

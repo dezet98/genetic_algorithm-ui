@@ -12,13 +12,6 @@ class DbTable {
         return "PRIMARY KEY";
     }
   }
-
-  // Map<String, Object?> getMap() {
-  //   Map<String, Object?> map = {};
-  //   for (var column in columns) {
-  //     map[column.name] = column.
-  //   }
-  // }
 }
 
 enum DbType { PRIMARY_KEY }

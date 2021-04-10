@@ -7,7 +7,11 @@ class ResultsInitialState extends ResultsState {}
 
 class ResultsLoadingInProgressState extends ResultsState {}
 
-class ResultsLoadingSuccesfullState extends ResultsState {}
+class ResultsLoadingSuccesfullState extends ResultsState {
+  final List<AlgorithmResult> algorithmResults;
+
+  ResultsLoadingSuccesfullState(this.algorithmResults);
+}
 
 class ResultsLoadingFailureState extends ResultsState {
   final LocalDatabaseError error;

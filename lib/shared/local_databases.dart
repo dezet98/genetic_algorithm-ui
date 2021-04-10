@@ -1,8 +1,16 @@
-import 'package:genetic_algorithms/data/algorithm/result.dart';
-import 'package:genetic_algorithms/data/models/local_database/database.dart';
+import 'package:genetic_algorithms/data/local_database/database.dart';
+import 'package:genetic_algorithms/data/models/algorithm_result.dart';
+import 'package:genetic_algorithms/data/models/average_in_epoch.dart';
+import 'package:genetic_algorithms/data/models/best_in_epoch.dart';
+import 'package:genetic_algorithms/data/models/standard_deviation.dart';
 
 DbModel database1 = DbModel(
-  name: "db6",
+  name: "db12",
   version: 2,
-  tables: [...Result.getDbTables()],
+  tables: [
+    AlgorithmResult.dbTable,
+    AverageInEpoch.dbTable,
+    BestInEpoch.dbTable,
+    StandardDeviation.dbTable,
+  ],
 );

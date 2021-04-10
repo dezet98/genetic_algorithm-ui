@@ -4,16 +4,30 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/result_delete/result_delete_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/results/results_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/router/router_bloc.dart';
+import 'package:genetic_algorithms/data/models/algorithm_result.dart';
 import 'package:genetic_algorithms/shared/extensions.dart';
 import 'package:genetic_algorithms/shared/routes.dart';
 
 class ResultTile extends StatelessWidget {
+  final AlgorithmResult _algorithmResult;
+
+  ResultTile(this._algorithmResult);
+
   @override
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        title: Text("Daniel"),
-        subtitle: Text("Date"),
+        title: Text("Wynik numer " + _algorithmResult.resultId.toString()),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(_algorithmResult.epochsAmount.toString() + " epok"),
+            Text(_algorithmResult.populationSize.toString() + " osobników"),
+            Text("Czas wykonania: " +
+                _algorithmResult.algorithmTime +
+                " sekund"),
+          ],
+        ),
         trailing: BlocConsumer(
           bloc: context.bloc<ResultDeleteBloc>(),
           listener: resultDeleteBlocListener,

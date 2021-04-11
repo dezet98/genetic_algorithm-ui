@@ -109,3 +109,26 @@ double calculateStandardDeviation(Population population) {
 
   return sqrt(partialSum / population.getPopulationAmount());
 }
+
+double calculateAverageForBest(List<double> best) {
+  var sum = 0.0;
+  for (var i = 0; i < best.length; i++) {
+    sum += best[i];
+  }
+
+  return sum / best.length;
+}
+
+List<double> addPopulation(Population population) {
+
+  List<double>  chromosomesGrade = [];
+  for (var i = 0; i < population.getPopulationAmount(); i++) {
+    var x = population.decimalFirstNumber(i);
+    var y = population.decimalSecondNumber(i);
+
+    var chromosome = (sin(x + y) + pow((x - y), 2) - 1.5 * x + 2.5 * y + 1);
+
+    chromosomesGrade.add(chromosome);
+  }
+  return chromosomesGrade;
+}

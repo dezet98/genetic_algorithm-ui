@@ -27,6 +27,7 @@ class GeneticAlgorithm {
   late File file;
   late var partialPath;
   late var path;
+  late List<List<double>> chromosomesInEachEpoch = [];
 
   GeneticAlgorithm({required this.epochsAmount,
     required this.inversion,
@@ -47,6 +48,7 @@ class GeneticAlgorithm {
 
     for (var i = 1; i <= epochsAmount; i++) {
       gradeStrategy.evaluate(population);
+      chromosomesInEachEpoch.add(addPopulation(population));
       bestInEpoch.add(findTheBest(population));
       averageInEpoch.add(calculateAverage(population));
       standardDeviation.add(calculateStandardDeviation(population));
@@ -73,22 +75,38 @@ class GeneticAlgorithm {
 
       eliteStrategy.setBestToPopulation(population);
       //printPopulation(population, gradeStrategy, 'Dodanie najlepszych');
-      // saveEpochToFile(file, population, gradeStrategy, i.toString());
+
+
     }
     gradeStrategy.evaluate(population);
     bestInEpoch.add(findTheBest(population));
     averageInEpoch.add(calculateAverage(population));
     standardDeviation.add(calculateStandardDeviation(population));
+
     // printPopulation('********** Ostateczna populacja *******');
 
     var result = Result(
         epochsAmount: epochsAmount,
         populationSize: population.getPopulationAmount(),
         algorithmTime: (stopwatch.elapsed.inMilliseconds / 1000).toString(),
+        best: findTheBest(population),
+        dataTime:  DateTime.now(),
+        bestAverage: calculateAverageForBest(bestInEpoch),
         bestInEpoch: bestInEpoch,
         averageInEpoch: averageInEpoch,
-        standardDeviation: standardDeviation);
+        standardDeviation: standardDeviation,
+        chromosomesInEachEpoch: chromosomesInEachEpoch);
 
+    print(result.epochsAmount);
+    print(result.populationSize);
+    print(result.algorithmTime);
+    print(result.best);
+    print(result.dataTime);
+    print(result.bestAverage);
+    print(result.bestInEpoch);
+    print(result.averageInEpoch);
+    print(result.standardDeviation);
+    print(result.chromosomesInEachEpoch);
     return result;
   }
 }

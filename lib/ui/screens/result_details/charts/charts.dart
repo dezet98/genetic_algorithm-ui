@@ -117,13 +117,13 @@ class ChartsTab extends TabItem {
             : null,
       );
 
-  List<SplineSeries<BestInEpoch, num>> get bestInEpochsSeries => getDefaultData(
+  List<LineSeries<BestInEpoch, num>> get bestInEpochsSeries => getDefaultData(
         dataSource: bestInEpochs!,
         xValueMapper: (BestInEpoch bestInEpoch, _) => bestInEpoch.epoch,
         yValueMapper: (BestInEpoch bestInEpoch, _) => bestInEpoch.value,
       );
 
-  List<SplineSeries<AverageInEpoch, num>> get averageInEpochSeries =>
+  List<LineSeries<AverageInEpoch, num>> get averageInEpochSeries =>
       getDefaultData(
         dataSource: averageInEpochs!,
         xValueMapper: (AverageInEpoch averageInEpoch, _) =>
@@ -132,7 +132,7 @@ class ChartsTab extends TabItem {
             averageInEpoch.value,
       );
 
-  List<SplineSeries<StandardDeviation, num>> get standardDeviationSeries =>
+  List<LineSeries<StandardDeviation, num>> get standardDeviationSeries =>
       getDefaultData(
         dataSource: standardDeviations!,
         xValueMapper: (StandardDeviation standardDeviation, int) =>
@@ -141,22 +141,19 @@ class ChartsTab extends TabItem {
             standardDeviation.value,
       );
 
-  List<SplineSeries<DataType, num>> getDefaultData<DataType>({
+  List<LineSeries<DataType, num>> getDefaultData<DataType>({
     required List<DataType> dataSource,
     required num? Function(DataType, int) xValueMapper,
     required num? Function(DataType, int) yValueMapper,
   }) {
     return [
-      SplineSeries<DataType, num>(
+      LineSeries<DataType, num>(
         dataSource: dataSource,
         xValueMapper: xValueMapper,
         yValueMapper: yValueMapper,
         width: 2,
-        cardinalSplineTension: 0.9,
-        splineType: SplineType.natural,
-        // dashArray: <double>[1, 3],
         markerSettings: MarkerSettings(
-          isVisible: true,
+          isVisible: false,
           height: 1,
           width: 1,
           shape: DataMarkerType.circle,

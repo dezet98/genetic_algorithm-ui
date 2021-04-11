@@ -1,5 +1,5 @@
+import 'package:genetic_algorithms/data/local_database/database_actions.dart';
 import 'package:genetic_algorithms/data/local_database/database_column.dart';
-import 'package:genetic_algorithms/data/local_database/database_insert.dart';
 import 'package:genetic_algorithms/data/local_database/database_model.dart';
 import 'package:genetic_algorithms/data/local_database/database_table.dart';
 import 'package:genetic_algorithms/shared/exceptions.dart';
@@ -35,8 +35,8 @@ class AlgorithmResult extends DatabaseModel {
   static DbColumn dbAlgorithmTime =
       DbColumn(name: "ALGORITHM_TIME", columnType: DbColumnType.STRING);
 
-  static DatabaseInsertQuery saveToDatabase(AlgorithmResult algorithmResult) {
-    return DatabaseInsertQuery(dbTable.name, {
+  static DatabaseInsertAction saveToDatabase(AlgorithmResult algorithmResult) {
+    return DatabaseInsertAction(tableName: dbTable.name, map: {
       dbEpochsAmount.name: algorithmResult.epochsAmount,
       dbPopulationSize.name: algorithmResult.populationSize,
       dbAlgorithmTime.name: algorithmResult.algorithmTime

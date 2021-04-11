@@ -1,5 +1,5 @@
+import 'package:genetic_algorithms/data/local_database/database_actions.dart';
 import 'package:genetic_algorithms/data/local_database/database_column.dart';
-import 'package:genetic_algorithms/data/local_database/database_insert.dart';
 import 'package:genetic_algorithms/data/local_database/database_model.dart';
 import 'package:genetic_algorithms/data/local_database/database_table.dart';
 
@@ -26,21 +26,24 @@ class BestInEpoch extends DatabaseModel {
   static DbColumn dbValue =
       DbColumn(name: "VALUE", columnType: DbColumnType.DOUBLE);
 
-  static DatabaseInsertQuery saveToDatabase(BestInEpoch bestInEpoch) {
-    return DatabaseInsertQuery(dbTable.name, {
-      dbResultId.name: bestInEpoch.resultId,
-      dbEpoch.name: bestInEpoch.epoch,
-      dbValue.name: bestInEpoch.value,
-    });
+  static DatabaseInsertAction saveToDatabase(BestInEpoch bestInEpoch) {
+    return DatabaseInsertAction(
+      tableName: dbTable.name,
+      map: {
+        dbResultId.name: bestInEpoch.resultId,
+        dbEpoch.name: bestInEpoch.epoch,
+        dbValue.name: bestInEpoch.value,
+      },
+    );
   }
 
-  static List<DatabaseInsertQuery> saveMultiToDatabase(
+  static List<DatabaseInsertAction> saveMultiToDatabase(
       List<BestInEpoch> bestInEpochs) {
     return List.generate(
       bestInEpochs.length,
-      (index) => DatabaseInsertQuery(
-        dbTable.name,
-        {
+      (index) => DatabaseInsertAction(
+        tableName: dbTable.name,
+        map: {
           dbResultId.name: bestInEpochs[index].resultId,
           dbEpoch.name: bestInEpochs[index].epoch,
           dbValue.name: bestInEpochs[index].value,

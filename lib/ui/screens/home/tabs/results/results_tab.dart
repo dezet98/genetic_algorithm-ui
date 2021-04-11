@@ -1,92 +1,37 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:genetic_algorithms/blocs/abstract/local_database_get/local_database_get_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/result/results_get_bloc.dart';
 import 'package:genetic_algorithms/data/models/algorithm_result.dart';
-import 'package:genetic_algorithms/shared/exceptions.dart';
 import 'package:genetic_algorithms/shared/extensions.dart';
 import 'package:genetic_algorithms/ui/components/bar_item.dart';
+import 'package:genetic_algorithms/ui/components/database_get_builder.dart';
 import 'package:genetic_algorithms/ui/screens/home/tabs/results/result_tile.dart';
 
 class ResultsTab extends TabItem {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer(
-      bloc: context.bloc<ResultsGetBloc>(),
-      builder: resultsBuilder,
-      listener: (context, state) {},
+    return DatabaseGetBuilder(
+      localDatabaseGetBloc: context.bloc<ResultsGetBloc>(),
+      successBuilder: successBuilder,
+      refreshAction: () => refreshAction(context),
     );
   }
 
-  Widget resultsBuilder(BuildContext context, LocalDatabaseGetState state) {
-    if (state is LocalDatabaseGetInProgressState) {
-      return inProgressWidget(state);
-    } else if (state is LocalDatabaseGetInitialState) {
-      return initialWidget(state);
-    } else if (state is LocalDatabaseGetSuccesfullState<List<AlgorithmResult>>)
-      return successWidget(context, state);
-
-    return failureWidget(context, state as LocalDatabaseGetFailureState);
-  }
-
-  Widget initialWidget(LocalDatabaseGetInitialState state) {
-    return Center(child: CircularProgressIndicator());
-  }
-
-  Widget inProgressWidget(LocalDatabaseGetInProgressState state) {
-    return Center(child: CircularProgressIndicator());
-  }
-
-  Widget failureWidget(
-      BuildContext context, LocalDatabaseGetFailureState state) {
-    return Center(
-      child: Column(
-        children: [
-          Text('Error'),
-          Text(getTextFromError(state.error)),
-          if (state.message != null) Text(state.message!),
-          ElevatedButton(
-            onPressed: () => refreshAction(context),
-            child: Icon(Icons.refresh_rounded),
-          ),
-        ],
-      ),
-    );
-  }
-
-  String getTextFromError(LocalDatabaseError error) {
-    switch (error) {
-      case LocalDatabaseError.UNDEFINED:
-        return "UNDEFINED";
-      case LocalDatabaseError.GET_FROM_DATABASE_CAST_ERROR:
-        return "GET_FROM_DATABASE_CAST_ERROR";
-      case LocalDatabaseError.DELETE_ERROR:
-        return "DELETE_ERROR";
-      default:
-        return "UNDEFINED";
-    }
-  }
-
-  Widget successWidget(BuildContext context,
-      LocalDatabaseGetSuccesfullState<List<AlgorithmResult>> state) {
+  Widget successBuilder(
+      BuildContext context, LocalDatabaseGetSuccesfullState state) {
+    List<AlgorithmResult> algorithmResults =
+        (state as LocalDatabaseGetSuccesfullState<List<AlgorithmResult>>)
+            .results;
     return Scaffold(
       body: ListView.builder(
-        itemCount: state.results.length,
+        itemCount: algorithmResults.length,
         itemBuilder: (context, index) {
-          return ResultTile(state.results[index]);
+          return ResultTile(algorithmResults[index]);
         },
       ),
-      floatingActionButton: refreshButton(context),
-    );
-  }
-
-  Widget refreshButton(BuildContext context) {
-    return FloatingActionButton(
-      child: Icon(Icons.refresh),
-      onPressed: () {
-        refreshAction(context);
-      },
+      floatingActionButton:
+          DatabaseGetBuilder.refreshButton(() => refreshAction(context)),
     );
   }
 

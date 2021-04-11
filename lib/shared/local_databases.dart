@@ -5,7 +5,7 @@ import 'package:genetic_algorithms/data/models/best_in_epoch.dart';
 import 'package:genetic_algorithms/data/models/standard_deviation.dart';
 
 DbModel database1 = DbModel(
-  name: "db12",
+  name: "db14",
   version: 2,
   tables: [
     AlgorithmResult.dbTable,

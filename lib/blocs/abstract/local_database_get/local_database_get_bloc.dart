@@ -13,7 +13,7 @@ abstract class LocalDatabaseGetBloc<GetResultType>
     add(LocalDatabaseGetRefreshEvent());
   }
 
-  Future<GetResultType> saveToDatabase();
+  Future<GetResultType> getFromDatabase();
 
   @override
   Stream<LocalDatabaseGetState> mapEventToState(
@@ -28,7 +28,7 @@ abstract class LocalDatabaseGetBloc<GetResultType>
     try {
       yield LocalDatabaseGetInProgressState();
 
-      GetResultType result = await saveToDatabase();
+      GetResultType result = await getFromDatabase();
 
       yield LocalDatabaseGetSuccesfullState(result);
     } catch (e) {

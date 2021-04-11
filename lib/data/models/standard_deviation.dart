@@ -1,5 +1,5 @@
+import 'package:genetic_algorithms/data/local_database/database_actions.dart';
 import 'package:genetic_algorithms/data/local_database/database_column.dart';
-import 'package:genetic_algorithms/data/local_database/database_insert.dart';
 import 'package:genetic_algorithms/data/local_database/database_model.dart';
 import 'package:genetic_algorithms/data/local_database/database_table.dart';
 
@@ -27,22 +27,22 @@ class StandardDeviation extends DatabaseModel {
   static DbColumn dbValue =
       DbColumn(name: "VALUE", columnType: DbColumnType.DOUBLE);
 
-  static DatabaseInsertQuery saveToDatabase(
+  static DatabaseInsertAction saveToDatabase(
       StandardDeviation standardDeviation) {
-    return DatabaseInsertQuery(dbTable.name, {
+    return DatabaseInsertAction(tableName: dbTable.name, map: {
       dbResultId.name: standardDeviation.resultId,
       dbEpoch.name: standardDeviation.epoch,
       dbValue.name: standardDeviation.value,
     });
   }
 
-  static List<DatabaseInsertQuery> saveMultiToDatabase(
+  static List<DatabaseInsertAction> saveMultiToDatabase(
       List<StandardDeviation> standardDeviations) {
     return List.generate(
       standardDeviations.length,
-      (index) => DatabaseInsertQuery(
-        dbTable.name,
-        {
+      (index) => DatabaseInsertAction(
+        tableName: dbTable.name,
+        map: {
           dbResultId.name: standardDeviations[index].resultId,
           dbEpoch.name: standardDeviations[index].epoch,
           dbValue.name: standardDeviations[index].value,
@@ -52,7 +52,7 @@ class StandardDeviation extends DatabaseModel {
   }
 
   static StandardDeviation fromDataBase(Map<String, Object?> map) {
-    var resultId = map[dbResultId] as int;
+    var resultId = map[dbResultId.name] as int;
     var epoch = map[dbEpoch.name] as int;
     var value = map[dbValue.name] as double;
 

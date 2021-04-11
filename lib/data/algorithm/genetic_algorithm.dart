@@ -22,6 +22,7 @@ class GeneticAlgorithm {
   List<double> averageInEpoch = [];
   List<double> standardDeviation = [];
   late int populationSizeWithoutElite;
+  late List<List<double>> chromosomesInEachEpoch = [];
 
   GeneticAlgorithm(
       {required this.epochsAmount,
@@ -38,17 +39,15 @@ class GeneticAlgorithm {
 
   Result runAlgorithm() {
     final stopwatch = Stopwatch()..start();
-    //final File file = await initFile();
 
     for (var i = 1; i <= epochsAmount; i++) {
       gradeStrategy.evaluate(population);
-      bestInEpoch.add(findTheBest(population, gradeStrategy));
-      averageInEpoch.add(calculateAverage(population, gradeStrategy));
-      standardDeviation
-          .add(calculateStandardDeviation(population, gradeStrategy));
+      chromosomesInEachEpoch.add(addPopulation(population));
+      bestInEpoch.add(findTheBest(population));
+      averageInEpoch.add(calculateAverage(population));
+      standardDeviation.add(calculateStandardDeviation(population));
 
-      // //printPopulation(population, gradeStrategy,
-      //     '************** Początek epoki $i **************');
+      // printPopulation('************** Początek epoki $i **************');
 
       population = eliteStrategy.getBestFromPopulation(population);
       // //printPopulation(population, gradeStrategy, 'Po Elite: ');
@@ -70,24 +69,36 @@ class GeneticAlgorithm {
 
       eliteStrategy.setBestToPopulation(population);
       //printPopulation(population, gradeStrategy, 'Dodanie najlepszych');
-      // saveEpochToFile(file, population, gradeStrategy, i.toString());
     }
     gradeStrategy.evaluate(population);
-    bestInEpoch.add(findTheBest(population, gradeStrategy));
-    averageInEpoch.add(calculateAverage(population, gradeStrategy));
-    standardDeviation
-        .add(calculateStandardDeviation(population, gradeStrategy));
-    //printPopulation(
-    //population, gradeStrategy, '********** Ostateczna populacja *******');
+    bestInEpoch.add(findTheBest(population));
+    averageInEpoch.add(calculateAverage(population));
+    standardDeviation.add(calculateStandardDeviation(population));
+
+    // printPopulation('********** Ostateczna populacja *******');
 
     var result = Result(
         epochsAmount: epochsAmount,
         populationSize: population.getPopulationAmount(),
         algorithmTime: (stopwatch.elapsed.inMilliseconds / 1000).toString(),
+        best: findTheBest(population),
+        dataTime: DateTime.now(),
+        bestAverage: calculateAverageForBest(bestInEpoch),
         bestInEpoch: bestInEpoch,
         averageInEpoch: averageInEpoch,
-        standardDeviation: standardDeviation);
+        standardDeviation: standardDeviation,
+        chromosomesInEachEpoch: chromosomesInEachEpoch);
 
+    print(result.epochsAmount);
+    print(result.populationSize);
+    print(result.algorithmTime);
+    print(result.best);
+    print(result.dataTime);
+    print(result.bestAverage);
+    print(result.bestInEpoch);
+    print(result.averageInEpoch);
+    print(result.standardDeviation);
+    print(result.chromosomesInEachEpoch);
     return result;
   }
 }

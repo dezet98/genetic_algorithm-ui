@@ -154,13 +154,13 @@ class ChartsTab extends TabItem {
         width: 2,
         cardinalSplineTension: 0.9,
         splineType: SplineType.natural,
-        dashArray: <double>[1, 3],
+        // dashArray: <double>[1, 3],
         markerSettings: MarkerSettings(
           isVisible: true,
-          height: 4,
-          width: 4,
+          height: 1,
+          width: 1,
           shape: DataMarkerType.circle,
-          borderWidth: 3,
+          borderWidth: 1,
           borderColor: Colors.blue,
         ),
         // dataLabelSettings: DataLabelSettings(

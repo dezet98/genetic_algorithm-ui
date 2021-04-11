@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:genetic_algorithms/data/algorithm/units.dart';
 
 import 'cross.dart';
@@ -38,9 +36,9 @@ class GeneticAlgorithm {
         population.getPopulationAmount() - eliteStrategy.eliteStrategyAmount;
   }
 
-  Future<Result> runAlgorithm() async {
+  Result runAlgorithm() {
     final stopwatch = Stopwatch()..start();
-    final File file = await initFile();
+    //final File file = await initFile();
 
     for (var i = 1; i <= epochsAmount; i++) {
       gradeStrategy.evaluate(population);
@@ -72,7 +70,7 @@ class GeneticAlgorithm {
 
       eliteStrategy.setBestToPopulation(population);
       //printPopulation(population, gradeStrategy, 'Dodanie najlepszych');
-      saveEpochToFile(file, population, gradeStrategy, i.toString());
+      // saveEpochToFile(file, population, gradeStrategy, i.toString());
     }
     gradeStrategy.evaluate(population);
     bestInEpoch.add(findTheBest(population, gradeStrategy));

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:genetic_algorithms/blocs/abstract/form/form_bloc.dart';
 import 'package:genetic_algorithms/blocs/abstract/local_database_save/local_database_save_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/fields/check_field_bloc.dart';
@@ -123,24 +124,33 @@ class AlgorithmParamsFormBloc extends FormBloc<Result> {
 
   @override
   Future<Result> onSubmit(Map<dynamic, Object?> results) async {
-    var result = await Connection().connect(
-      results[FormItems.startRange] as double,
-      results[FormItems.endRange] as double,
-      results[FormItems.populationAmount] as int,
-      results[FormItems.epochsAmount] as int,
-      results[FormItems.selectionProbability] as double,
-      results[FormItems.crossProbability] as double,
-      results[FormItems.mutationProbability] as double,
-      results[FormItems.inversionProbability] as double,
-      results[FormItems.eliteStrategyAmount] as int,
-      results[FormItems.gradeStrategy] as bool,
-      results[FormItems.selection] as String,
-      results[FormItems.cross] as String,
-      results[FormItems.mutation] as String,
-    );
+    Result computeFuture = await computeOnMainIsolate(results);
 
     if (PlatformInfo.isNotWeb)
-      _resultSaveBloc.add(LocalDatabaseSaveDataEvent(result));
-    return result;
+      _resultSaveBloc.add(LocalDatabaseSaveDataEvent(computeFuture));
+
+    return computeFuture;
   }
+}
+
+Future<Result> computeOnMainIsolate(Map<dynamic, Object?> results) async {
+  return await compute(runAlgorithm, results);
+}
+
+Result runAlgorithm(Map<dynamic, Object?> results) {
+  return Connection().connect(
+    results[FormItems.startRange] as double,
+    results[FormItems.endRange] as double,
+    results[FormItems.populationAmount] as int,
+    results[FormItems.epochsAmount] as int,
+    results[FormItems.selectionProbability] as double,
+    results[FormItems.crossProbability] as double,
+    results[FormItems.mutationProbability] as double,
+    results[FormItems.inversionProbability] as double,
+    results[FormItems.eliteStrategyAmount] as int,
+    results[FormItems.gradeStrategy] as bool,
+    results[FormItems.selection] as String,
+    results[FormItems.cross] as String,
+    results[FormItems.mutation] as String,
+  );
 }

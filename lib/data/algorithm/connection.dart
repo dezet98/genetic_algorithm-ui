@@ -2,7 +2,7 @@ import 'genetic_algorithm_create.dart';
 import 'result.dart';
 
 class Connection {
-  Future<Result> connect(
+  Result connect(
       double startRange,
       double endRange,
       int populationAmount,
@@ -15,8 +15,8 @@ class Connection {
       bool gradeStrategy,
       String selection,
       String cross,
-      String mutation) async {
-    return await GeneticAlgorithmCreate(
+      String mutation) {
+    return GeneticAlgorithmCreate(
       startRange: startRange,
       endRange: endRange,
       populationAmount: populationAmount,

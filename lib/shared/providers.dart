@@ -25,6 +25,7 @@ List<BlocProvider> getMainBlocProviders() => [
       BlocProvider<ResultSaveBloc>(
         create: (context) => ResultSaveBloc(
           RepositoryProvider.of<LocalDatabaseService>(context),
+          context.bloc<ResultsGetBloc>(),
         ),
       ),
       BlocProvider<AlgorithmParamsFormBloc>(

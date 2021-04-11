@@ -1,3 +1,5 @@
+import 'logger/app_logger.dart';
+
 abstract class Validator {}
 
 class DoubleValidator extends Validator {
@@ -15,7 +17,7 @@ class DoubleValidator extends Validator {
       }
       return errorText ?? "Error";
     } catch (e) {
-      print(e);
+      AppLogger().log(message: e.toString(), logLevel: LogLevel.error);
     }
   }
 }
@@ -35,7 +37,7 @@ class IntValidator extends Validator {
       }
       return errorText ?? "Error";
     } catch (e) {
-      print(e);
+      AppLogger().log(message: e.toString(), logLevel: LogLevel.error);
     }
   }
 }

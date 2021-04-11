@@ -114,7 +114,7 @@ class GeneticAlgorithmCreate {
     return gradeStrategyChoose;
   }
 
-  Result createGeneticAlgorithm() {
+  Future<Result> createGeneticAlgorithm() async {
     var inversion = Inversion(inversionProbability);
     var eliteStrategy = EliteStrategy(eliteStrategyAmount);
     var selection = chooseSelection(this.selection);
@@ -123,7 +123,7 @@ class GeneticAlgorithmCreate {
     var gradeStrategy = gradeStrategyChoose(this.gradeStrategy);
     var population = Population(startRange, endRange, populationAmount);
 
-    return GeneticAlgorithm(
+    return await GeneticAlgorithm(
             epochsAmount: epochsAmount,
             inversion: inversion,
             eliteStrategy: eliteStrategy,

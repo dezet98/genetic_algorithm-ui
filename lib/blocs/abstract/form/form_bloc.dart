@@ -12,7 +12,7 @@ abstract class FormBloc<ResultType> extends Bloc<FormEvent, FormState> {
 
   FormBloc(this.fieldBlocs) : super(FormInitialState());
 
-  ResultType onSubmit(Map<dynamic, Object?> values);
+  Future<ResultType> onSubmit(Map<dynamic, Object?> values);
 
   @override
   Stream<FormState> mapEventToState(
@@ -25,7 +25,7 @@ abstract class FormBloc<ResultType> extends Bloc<FormEvent, FormState> {
         yield FormSubmitFailureState();
       } else {
         try {
-          ResultType result = onSubmit(_resultsMap);
+          ResultType result = await onSubmit(_resultsMap);
           yield FormSubmitSuccessState<ResultType>(result);
         } catch (e) {
           yield FormSubmitFailureState();

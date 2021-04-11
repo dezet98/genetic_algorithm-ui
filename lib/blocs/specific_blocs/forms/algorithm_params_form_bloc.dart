@@ -95,13 +95,22 @@ class AlgorithmParamsFormBloc extends FormBloc<Result> {
             labelText: "Choose selection method",
           ),
           SelectFieldBloc<String>(
-            items: ['one_point_cross', 'two_points_cross', 'three_points_cross', 'homogeneous_cross'],
+            items: [
+              'one_point_cross',
+              'two_points_cross',
+              'three_points_cross',
+              'homogeneous_cross'
+            ],
             initialValue: 'one_point_cross',
             key: FormItems.cross,
             labelText: "Choose cross method",
           ),
           SelectFieldBloc<String>(
-            items: ['one_point_mutation', 'two_points_mutation', 'edge_mutation'],
+            items: [
+              'one_point_mutation',
+              'two_points_mutation',
+              'edge_mutation'
+            ],
             initialValue: 'one_point_mutation',
             key: FormItems.mutation,
             labelText: "Choose mutation method",
@@ -113,8 +122,8 @@ class AlgorithmParamsFormBloc extends FormBloc<Result> {
         ]);
 
   @override
-  Result onSubmit(Map<dynamic, Object?> results) {
-    var result = Connection().connect(
+  Future<Result> onSubmit(Map<dynamic, Object?> results) async {
+    var result = await Connection().connect(
       results[FormItems.startRange] as double,
       results[FormItems.endRange] as double,
       results[FormItems.populationAmount] as int,

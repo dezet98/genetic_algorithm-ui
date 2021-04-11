@@ -26,6 +26,7 @@ class ChartsTab extends TabItem {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
+      padding: const EdgeInsets.symmetric(horizontal: Directions.screenPadding),
       child: Column(
         children: [
           for (var i = 0; i < charts.length; i++)
@@ -56,19 +57,23 @@ class ChartsTab extends TabItem {
       [bestInEpochsChart(), averageInEpochChart(), standardDeviationChart()];
 
   List<SfCartesianChart> get chartsForChartScreen => [
-        bestInEpochsChart(isPrimaryXAxis: true, isPrimaryYAxis: true),
-        averageInEpochChart(isPrimaryXAxis: true, isPrimaryYAxis: true),
-        standardDeviationChart(isPrimaryXAxis: true, isPrimaryYAxis: true)
+        bestInEpochsChart(
+            isPrimaryXAxis: true, isPrimaryYAxis: true, isTooltipEnable: true),
+        averageInEpochChart(
+            isPrimaryXAxis: true, isPrimaryYAxis: true, isTooltipEnable: true),
+        standardDeviationChart(
+            isPrimaryXAxis: true, isPrimaryYAxis: true, isTooltipEnable: true)
       ];
 
   SfCartesianChart bestInEpochsChart({
     bool isPrimaryXAxis = false,
     bool isPrimaryYAxis = false,
+    bool isTooltipEnable = false,
   }) =>
       SfCartesianChart(
         title: ChartTitle(text: 'Best values ​​on the next epoch'),
         series: bestInEpochsSeries,
-        tooltipBehavior: TooltipBehavior(enable: true),
+        tooltipBehavior: TooltipBehavior(enable: isTooltipEnable),
         enableAxisAnimation: true,
         primaryXAxis: isPrimaryXAxis
             ? NumericAxis(title: AxisTitle(text: 'Epoch'))
@@ -81,11 +86,12 @@ class ChartsTab extends TabItem {
   SfCartesianChart averageInEpochChart({
     bool isPrimaryXAxis = false,
     bool isPrimaryYAxis = false,
+    bool isTooltipEnable = false,
   }) =>
       SfCartesianChart(
         title: ChartTitle(text: 'Average values ​​on the next epoch'),
         series: averageInEpochSeries,
-        tooltipBehavior: TooltipBehavior(enable: true),
+        tooltipBehavior: TooltipBehavior(enable: isTooltipEnable),
         primaryXAxis: isPrimaryXAxis
             ? NumericAxis(title: AxisTitle(text: 'Epoch'))
             : null,
@@ -97,11 +103,12 @@ class ChartsTab extends TabItem {
   SfCartesianChart standardDeviationChart({
     bool isPrimaryXAxis = false,
     bool isPrimaryYAxis = false,
+    bool isTooltipEnable = false,
   }) =>
       SfCartesianChart(
         title: ChartTitle(text: 'The standard deviation on the next epoch'),
         series: standardDeviationSeries,
-        tooltipBehavior: TooltipBehavior(enable: true),
+        tooltipBehavior: TooltipBehavior(enable: isTooltipEnable),
         primaryXAxis: isPrimaryXAxis
             ? NumericAxis(title: AxisTitle(text: 'Epoch'))
             : null,

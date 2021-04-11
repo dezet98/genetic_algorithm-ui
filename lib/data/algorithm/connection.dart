@@ -1,9 +1,5 @@
-import 'cross.dart';
 import 'genetic_algorithm_create.dart';
-import 'grade_strategy.dart';
-import 'mutation.dart';
 import 'result.dart';
-import 'selection.dart';
 
 class Connection {
   Result connect(

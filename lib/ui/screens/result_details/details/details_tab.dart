@@ -5,6 +5,7 @@ import 'package:genetic_algorithms/blocs/specific_blocs/info_tab_precision_bloc.
 import 'package:genetic_algorithms/data/models/average_in_epoch.dart';
 import 'package:genetic_algorithms/data/models/best_in_epoch.dart';
 import 'package:genetic_algorithms/data/models/standard_deviation.dart';
+import 'package:genetic_algorithms/shared/theme.dart';
 import 'package:genetic_algorithms/ui/components/bar_item.dart';
 
 class DetailsTab extends TabItem {
@@ -19,27 +20,28 @@ class DetailsTab extends TabItem {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
-      child: Column(
-        children: [
-          getPresionPanel(context),
-          BlocBuilder<InfoTabPrecisionBloc, int>(
-            bloc: BlocProvider.of<InfoTabPrecisionBloc>(context),
-            builder: (context, state) {
-              return SingleChildScrollView(
+      padding: const EdgeInsets.all(Directions.screenPadding),
+      child: BlocBuilder<InfoTabPrecisionBloc, int>(
+        bloc: BlocProvider.of<InfoTabPrecisionBloc>(context),
+        builder: (context, state) {
+          return Column(
+            children: [
+              getPresionPanel(context, state),
+              SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: getTable(state),
                 ),
-              );
-            },
-          ),
-        ],
+              )
+            ],
+          );
+        },
       ),
     );
   }
 
-  Widget getPresionPanel(BuildContext context) {
+  Widget getPresionPanel(BuildContext context, int precision) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -48,7 +50,7 @@ class DetailsTab extends TabItem {
             onPressed: () {
               BlocProvider.of<InfoTabPrecisionBloc>(context).decrement();
             }),
-        Text('Precision'),
+        Text("Precision ($precision)"),
         IconButton(
             icon: Icon(Icons.add),
             onPressed: () {

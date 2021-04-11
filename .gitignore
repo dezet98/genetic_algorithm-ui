@@ -30,10 +30,10 @@
 .pub-cache/
 .pub/
 /build/
+each_epoch.txt
 
 # Web related
 lib/generated_plugin_registrant.dart
-
 # Symbolication related
 app.*.symbols
 

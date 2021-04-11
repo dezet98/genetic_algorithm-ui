@@ -1,5 +1,8 @@
-import 'dart:io' show File, FileMode;
+import 'dart:io' show Directory, File, FileMode;
 import 'dart:math';
+
+import "package:path/path.dart" show dirname;
+import 'dart:io' show Platform;
 
 import 'cross.dart';
 import 'elite_strategy.dart';
@@ -39,10 +42,17 @@ class GeneticAlgorithm {
     populationSizeWithoutElite =
         population.getPopulationAmount() - eliteStrategy.eliteStrategyAmount;
     {
-      // partialPath = dirname(Platform.script.path.toString());
-      // path = partialPath.substring(0, partialPath.length - 4) + '/results.txt';
-      // file = File(path);
-      // file.writeAsString('');
+
+      if(Platform.isWindows){
+        partialPath = Platform.script.toFilePath(windows: true).toString();
+        path = partialPath.substring(0, partialPath.length - 10) + '\\lib\\data\\local_database\\each_epoch.txt';
+      }
+
+      if(Platform.isLinux){
+        partialPath = Platform.script.toFilePath().toString();
+        path = partialPath.substring(0, partialPath.length - 10) + '/lib/data/local_database/each_epoch.txt';
+      }
+      file = File(path);
     }
   }
 
@@ -76,7 +86,7 @@ class GeneticAlgorithm {
 
       eliteStrategy.setBestToPopulation(population);
       printPopulation('Dodanie najlepszych');
-      // saveEpochToFile(population, i.toString());
+      saveEpochToFile(population, i.toString());
     }
     gradeStrategy.evaluate(population);
     bestInEpoch.add(findTheBest(population));

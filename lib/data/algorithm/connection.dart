@@ -27,7 +27,7 @@ class Connection {
       inversionProbability: inversionProbability,
       eliteStrategyAmount: eliteStrategyAmount,
       gradeStrategy: gradeStrategy ? 'maximal_grade' : 'minimal_grade',
-      selection: 'best',
+      selection: selection,
       cross: cross,
       mutation: mutation,
     ).createGeneticAlgorithm();

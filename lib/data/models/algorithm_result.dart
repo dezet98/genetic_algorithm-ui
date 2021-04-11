@@ -9,11 +9,17 @@ class AlgorithmResult extends DatabaseModel {
   int epochsAmount;
   int populationSize;
   String algorithmTime;
+  double best;
+  DateTime creationTime;
+  double bestAverage;
 
   AlgorithmResult(
       {required this.epochsAmount,
       required this.populationSize,
       required this.algorithmTime,
+      required this.best,
+      required this.creationTime,
+      required this.bestAverage,
       this.resultId});
 
   static DbTable dbTable = DbTable(name: "RESULT", columns: _dbColumns);
@@ -22,7 +28,10 @@ class AlgorithmResult extends DatabaseModel {
     dbResultId,
     dbEpochsAmount,
     dbPopulationSize,
-    dbAlgorithmTime
+    dbAlgorithmTime,
+    dbBest,
+    dbBestAverage,
+    dbCreationTime,
   ];
 
   // dbColumns
@@ -34,12 +43,21 @@ class AlgorithmResult extends DatabaseModel {
       DbColumn(name: "POPULATION_SIZE", columnType: DbColumnType.INT);
   static DbColumn dbAlgorithmTime =
       DbColumn(name: "ALGORITHM_TIME", columnType: DbColumnType.STRING);
+  static DbColumn dbBest =
+      DbColumn(name: "BEST", columnType: DbColumnType.DOUBLE);
+  static DbColumn dbBestAverage =
+      DbColumn(name: "BEST_AVERAGE", columnType: DbColumnType.DOUBLE);
+  static DbColumn dbCreationTime =
+      DbColumn(name: "CREATION_TIME", columnType: DbColumnType.STRING);
 
   static DatabaseInsertAction saveToDatabase(AlgorithmResult algorithmResult) {
     return DatabaseInsertAction(tableName: dbTable.name, map: {
       dbEpochsAmount.name: algorithmResult.epochsAmount,
       dbPopulationSize.name: algorithmResult.populationSize,
-      dbAlgorithmTime.name: algorithmResult.algorithmTime
+      dbAlgorithmTime.name: algorithmResult.algorithmTime,
+      dbBest.name: algorithmResult.best,
+      dbBestAverage.name: algorithmResult.bestAverage,
+      dbCreationTime.name: algorithmResult.creationTime.toIso8601String(),
     });
   }
 
@@ -49,11 +67,17 @@ class AlgorithmResult extends DatabaseModel {
       var epochsAmount = map[dbEpochsAmount.name] as int;
       var populationSize = map[dbPopulationSize.name] as int;
       var algorithmTime = (map[dbAlgorithmTime.name] as double).toString();
+      var best = map[dbBest.name] as double;
+      var bestAverage = map[dbBestAverage.name] as double;
+      var creationTime = map[dbCreationTime.name] as String;
 
       return AlgorithmResult(
           epochsAmount: epochsAmount,
           populationSize: populationSize,
           algorithmTime: algorithmTime,
+          best: best,
+          bestAverage: bestAverage,
+          creationTime: DateTime.parse(creationTime),
           resultId: resultId);
     } catch (e) {
       throw LocalDatabaseFailureException(

@@ -5,6 +5,7 @@ import 'package:genetic_algorithms/blocs/specific_blocs/fields/check_field_bloc.
 import 'package:genetic_algorithms/blocs/specific_blocs/fields/input_field_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/fields/select_field_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/result/result_save_bloc.dart';
+import 'package:genetic_algorithms/blocs/specific_blocs/save_to_file/save_to_file_bloc.dart';
 import 'package:genetic_algorithms/data/algorithm/connection.dart';
 import 'package:genetic_algorithms/data/algorithm/result.dart';
 import 'package:genetic_algorithms/shared/platforms.dart';
@@ -28,8 +29,9 @@ enum FormItems {
 
 class AlgorithmParamsFormBloc extends FormBloc<Result> {
   ResultSaveBloc _resultSaveBloc;
+  SaveToFileBloc _saveToFileBloc;
 
-  AlgorithmParamsFormBloc(this._resultSaveBloc)
+  AlgorithmParamsFormBloc(this._resultSaveBloc, this._saveToFileBloc)
       : super([
           InputFieldBloc<double>(
             key: FormItems.startRange,
@@ -128,6 +130,9 @@ class AlgorithmParamsFormBloc extends FormBloc<Result> {
 
     if (PlatformInfo.isNotWeb)
       _resultSaveBloc.add(LocalDatabaseSaveDataEvent(computeFuture));
+
+    _saveToFileBloc
+        .add(SaveToFileDataEvent(computeFuture.chromosomesInEachEpoch));
 
     return computeFuture;
   }

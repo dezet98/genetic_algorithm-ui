@@ -5,6 +5,7 @@ import 'package:genetic_algorithms/blocs/specific_blocs/result/result_delete_blo
 import 'package:genetic_algorithms/blocs/specific_blocs/result/result_save_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/result/results_get_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/router/router_bloc.dart';
+import 'package:genetic_algorithms/blocs/specific_blocs/save_to_file/save_to_file_bloc.dart';
 import 'package:genetic_algorithms/data/services/local_database_service.dart';
 import 'package:genetic_algorithms/shared/extensions.dart';
 import 'package:genetic_algorithms/shared/local_databases.dart';
@@ -28,9 +29,11 @@ List<BlocProvider> getMainBlocProviders() => [
           context.bloc<ResultsGetBloc>(),
         ),
       ),
+      BlocProvider<SaveToFileBloc>(create: (_) => SaveToFileBloc()),
       BlocProvider<AlgorithmParamsFormBloc>(
         create: (context) => AlgorithmParamsFormBloc(
           context.bloc<ResultSaveBloc>(),
+          context.bloc<SaveToFileBloc>(),
         ),
       ),
       BlocProvider<InfoTabPrecisionBloc>(create: (_) => InfoTabPrecisionBloc()),

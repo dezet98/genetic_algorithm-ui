@@ -21,10 +21,12 @@ class ResultTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        title: Text("Result number " + _algorithmResult.resultId.toString()),
+        title:
+            Text("nr ${_algorithmResult.resultId} - ${_algorithmResult.best}"),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text("Time: " + _algorithmResult.creationTime.toString()),
             Text(_algorithmResult.epochsAmount.toString() + " epochs"),
             Text(_algorithmResult.populationSize.toString() + " population"),
             Text("Execution time: " +

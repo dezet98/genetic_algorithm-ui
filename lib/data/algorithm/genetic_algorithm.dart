@@ -89,16 +89,6 @@ class GeneticAlgorithm {
         standardDeviation: standardDeviation,
         chromosomesInEachEpoch: chromosomesInEachEpoch);
 
-    print(result.epochsAmount);
-    print(result.populationSize);
-    print(result.algorithmTime);
-    print(result.best);
-    print(result.dataTime);
-    print(result.bestAverage);
-    print(result.bestInEpoch);
-    print(result.averageInEpoch);
-    print(result.standardDeviation);
-    print(result.chromosomesInEachEpoch);
     return result;
   }
 }

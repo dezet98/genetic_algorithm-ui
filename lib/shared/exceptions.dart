@@ -10,6 +10,10 @@ enum RouterError {
   ARGS_ERROR,
 }
 
+enum FileError {
+  UNDEFINED,
+}
+
 class LocalDatabaseFailureException implements Exception {
   LocalDatabaseError localDatabaseError;
   String? message;
@@ -22,4 +26,11 @@ class RouterException implements Exception {
   String? message;
 
   RouterException(this.routerError, this.message);
+}
+
+class SaveToFileException implements Exception {
+  FileError fileError;
+  String? message;
+
+  SaveToFileException(this.fileError, this.message);
 }

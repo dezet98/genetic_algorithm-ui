@@ -24,33 +24,34 @@ class GeneticAlgorithm {
   List<double> averageInEpoch = [];
   List<double> standardDeviation = [];
   late int populationSizeWithoutElite;
+  late File file;
+  late var partialPath;
+  late var path;
 
-  GeneticAlgorithm(
-      {required this.epochsAmount,
-      required this.inversion,
-      required this.eliteStrategy,
-      required this.selection,
-      required this.cross,
-      required this.mutation,
-      required this.gradeStrategy,
-      required this.population}) {
+  GeneticAlgorithm({required this.epochsAmount,
+    required this.inversion,
+    required this.eliteStrategy,
+    required this.selection,
+    required this.cross,
+    required this.mutation,
+    required this.gradeStrategy,
+    required this.population}) {
     populationSizeWithoutElite =
         population.getPopulationAmount() - eliteStrategy.eliteStrategyAmount;
   }
 
   Future<Result> runAlgorithm() async {
-    final stopwatch = Stopwatch()..start();
+    final stopwatch = Stopwatch()
+      ..start();
     final File file = await initFile();
 
     for (var i = 1; i <= epochsAmount; i++) {
       gradeStrategy.evaluate(population);
-      bestInEpoch.add(findTheBest(population, gradeStrategy));
-      averageInEpoch.add(calculateAverage(population, gradeStrategy));
-      standardDeviation
-          .add(calculateStandardDeviation(population, gradeStrategy));
+      bestInEpoch.add(findTheBest(population));
+      averageInEpoch.add(calculateAverage(population));
+      standardDeviation.add(calculateStandardDeviation(population));
 
-      // //printPopulation(population, gradeStrategy,
-      //     '************** Początek epoki $i **************');
+      // printPopulation('************** Początek epoki $i **************');
 
       population = eliteStrategy.getBestFromPopulation(population);
       // //printPopulation(population, gradeStrategy, 'Po Elite: ');
@@ -72,15 +73,13 @@ class GeneticAlgorithm {
 
       eliteStrategy.setBestToPopulation(population);
       //printPopulation(population, gradeStrategy, 'Dodanie najlepszych');
-      saveEpochToFile(file, population, gradeStrategy, i.toString());
+      // saveEpochToFile(file, population, gradeStrategy, i.toString());
     }
     gradeStrategy.evaluate(population);
-    bestInEpoch.add(findTheBest(population, gradeStrategy));
-    averageInEpoch.add(calculateAverage(population, gradeStrategy));
-    standardDeviation
-        .add(calculateStandardDeviation(population, gradeStrategy));
-    //printPopulation(
-    //population, gradeStrategy, '********** Ostateczna populacja *******');
+    bestInEpoch.add(findTheBest(population));
+    averageInEpoch.add(calculateAverage(population));
+    standardDeviation.add(calculateStandardDeviation(population));
+    // printPopulation('********** Ostateczna populacja *******');
 
     var result = Result(
         epochsAmount: epochsAmount,

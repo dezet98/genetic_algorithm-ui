@@ -78,13 +78,6 @@ class AlgorithmParamsFormBloc extends FormBloc<Result> {
             labelText: "Mutation probability",
             initialValue: 0.2,
           ),
-          InputFieldBloc<double>(
-            key: FormItems.inversionProbability,
-            validator: (value) => DoubleValidator.valid(value,
-                errorText: "Schould be in range <0, 100>", min: 0, max: 100),
-            labelText: "Inversion probability",
-            initialValue: 0.2,
-          ),
           InputFieldBloc<int>(
             key: FormItems.eliteStrategyAmount,
             validator: (value) => IntValidator.valid(value),
@@ -99,22 +92,18 @@ class AlgorithmParamsFormBloc extends FormBloc<Result> {
           ),
           SelectFieldBloc<String>(
             items: [
-              'one_point_cross',
-              'two_points_cross',
-              'three_points_cross',
-              'homogeneous_cross'
+              'arithmetic_cross',
+              'heuristic_cross'
             ],
-            initialValue: 'one_point_cross',
+            initialValue: 'arithmetic_cross',
             key: FormItems.cross,
             labelText: "Choose cross method",
           ),
           SelectFieldBloc<String>(
             items: [
-              'one_point_mutation',
-              'two_points_mutation',
-              'edge_mutation'
+              'uniform_mutation'
             ],
-            initialValue: 'one_point_mutation',
+            initialValue: 'uniform_mutation',
             key: FormItems.mutation,
             labelText: "Choose mutation method",
           ),
@@ -151,7 +140,6 @@ Result runAlgorithm(Map<dynamic, Object?> results) {
     results[FormItems.selectionProbability] as double,
     results[FormItems.crossProbability] as double,
     results[FormItems.mutationProbability] as double,
-    results[FormItems.inversionProbability] as double,
     results[FormItems.eliteStrategyAmount] as int,
     results[FormItems.gradeStrategy] as bool,
     results[FormItems.selection] as String,

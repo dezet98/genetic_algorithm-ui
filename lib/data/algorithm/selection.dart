@@ -11,7 +11,7 @@ abstract class Selection {
   Population selection(Population population);
 
   static Chromosome getBest(List<Chromosome> chromosomes) {
-    chromosomes.sort((a, b) => a.getGrade().compareTo(b.getGrade()));
+    chromosomes.sort((a, b) => a.grade.compareTo(b.grade));
     return chromosomes.last;
   }
 }
@@ -25,18 +25,18 @@ class Best implements Selection {
   @override
   Population selection(Population population) {
     population
-        .getChromosomes()
-        .sort((a, b) => b.getGrade().compareTo(a.getGrade()));
+        .chromosomes
+        .sort((a, b) => b.grade.compareTo(a.grade));
 
     var selectionElements =
-        (population.getChromosomes().length * selectionProbability).toInt();
+        (population.chromosomes.length * selectionProbability).toInt();
 
     for (var i = 0; i < selectionElements; i++) {
-      bestChromosome.add(population.getChromosomes()[i]);
+      bestChromosome.add(population.chromosomes[i]);
     }
 
-    population.setChromosomes(bestChromosome);
-    population.setPopulationAmount(bestChromosome.length);
+    population.chromosomes = bestChromosome;
+    population.populationAmount  = bestChromosome.length;
 
     bestChromosome = [];
 
@@ -55,12 +55,12 @@ class Roulette implements Selection {
     final finalChromosomes = <Chromosome>[];
     var sumOfMatches = 0.0;
     population.chromosomes.forEach((element) {
-      sumOfMatches += element.getGrade();
+      sumOfMatches += element.grade;
     });
 
     var winningProbabilities = List.generate(
       population.chromosomes.length,
-      (index) => population.chromosomes[index].getGrade() / sumOfMatches,
+      (index) => population.chromosomes[index].grade / sumOfMatches,
     );
 
     for (var i = 1; i < winningProbabilities.length - 1; i++) {
@@ -69,17 +69,17 @@ class Roulette implements Selection {
     winningProbabilities.last = 1.0;
 
     var selectionElements =
-        (population.getChromosomes().length * selectionProbability).toInt();
+        (population.chromosomes.length * selectionProbability).toInt();
 
     for (var i = 0; i < selectionElements; i++) {
       var random = rand.nextDouble();
       final chromosomeIndexWinner =
           winningProbabilities.indexWhere((el) => el > random);
-      finalChromosomes.add(population.getChromosomes()[chromosomeIndexWinner]);
+      finalChromosomes.add(population.chromosomes[chromosomeIndexWinner]);
     }
 
-    population.setPopulationAmount(finalChromosomes.length);
-    population.setChromosomes(finalChromosomes);
+    population.populationAmount = finalChromosomes.length;
+    population.chromosomes  = finalChromosomes;
     return population;
   }
 }
@@ -100,8 +100,8 @@ class Tournament implements Selection {
       winningChromosomes = tournamentStage(winningChromosomes);
     }
 
-    population.setPopulationAmount(winningChromosomes.length);
-    population.setChromosomes(winningChromosomes);
+    population.populationAmount  = winningChromosomes.length;
+    population.chromosomes = winningChromosomes;
     return population;
   }
 

@@ -3,7 +3,6 @@ import 'package:genetic_algorithms/data/algorithm/units.dart';
 import 'cross.dart';
 import 'elite_strategy.dart';
 import 'grade_strategy.dart';
-import 'inversion.dart';
 import 'mutation.dart';
 import 'population.dart';
 import 'result.dart';
@@ -11,7 +10,6 @@ import 'selection.dart';
 
 class GeneticAlgorithm {
   int epochsAmount;
-  Inversion inversion;
   EliteStrategy eliteStrategy;
   Selection selection;
   Cross cross;
@@ -26,7 +24,6 @@ class GeneticAlgorithm {
 
   GeneticAlgorithm(
       {required this.epochsAmount,
-      required this.inversion,
       required this.eliteStrategy,
       required this.selection,
       required this.cross,
@@ -34,7 +31,7 @@ class GeneticAlgorithm {
       required this.gradeStrategy,
       required this.population}) {
     populationSizeWithoutElite =
-        population.getPopulationAmount() - eliteStrategy.eliteStrategyAmount;
+        population.populationAmount - eliteStrategy.eliteStrategyAmount;
   }
 
   Result runAlgorithm() {
@@ -47,39 +44,36 @@ class GeneticAlgorithm {
       averageInEpoch.add(calculateAverage(population));
       standardDeviation.add(calculateStandardDeviation(population));
 
-      // printPopulation('************** Początek epoki $i **************');
+      // printPopulation('************** Początek epoki $i **************', population);
 
       population = eliteStrategy.getBestFromPopulation(population);
-      // //printPopulation(population, gradeStrategy, 'Po Elite: ');
+      // printPopulation( 'Po Elite: ', population,);
 
       population = selection.selection(population);
-      //printPopulation(population, gradeStrategy, 'Po selekcji');
+      // printPopulation('Po selekcji', population);
 
-      population = cross.cross(population, populationSizeWithoutElite);
+      population = cross.cross(population, populationSizeWithoutElite, gradeStrategy);
       gradeStrategy.evaluate(population);
-      //printPopulation(population, gradeStrategy, 'Po cross');
+      // printPopulation('Po cross', population);
 
       mutation.mutation(population);
       gradeStrategy.evaluate(population);
-      //printPopulation(population, gradeStrategy, 'Po mutacji');
+      // printPopulation('Po mutacji', population);
 
-      inversion.inversion(population);
-      gradeStrategy.evaluate(population);
-      //printPopulation(population, gradeStrategy, 'Po inwersji');
 
       eliteStrategy.setBestToPopulation(population);
-      //printPopulation(population, gradeStrategy, 'Dodanie najlepszych');
+      // printPopulation('Dodanie najlepszych', population);
     }
     gradeStrategy.evaluate(population);
     bestInEpoch.add(findTheBest(population));
     averageInEpoch.add(calculateAverage(population));
     standardDeviation.add(calculateStandardDeviation(population));
 
-    // printPopulation('********** Ostateczna populacja *******');
+    // printPopulation('********** Ostateczna populacja *******', population);
 
     var result = Result(
         epochsAmount: epochsAmount,
-        populationSize: population.getPopulationAmount(),
+        populationSize: population.populationAmount,
         algorithmTime: (stopwatch.elapsed.inMilliseconds / 1000).toString(),
         best: findTheBest(population),
         dataTime: DateTime.now(),

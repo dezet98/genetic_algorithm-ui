@@ -2,7 +2,6 @@ import 'cross.dart';
 import 'elite_strategy.dart';
 import 'genetic_algorithm.dart';
 import 'grade_strategy.dart';
-import 'inversion.dart';
 import 'mutation.dart';
 import 'population.dart';
 import 'result.dart';
@@ -16,7 +15,6 @@ class GeneticAlgorithmCreate {
   double selectionProbability;
   double crossProbability;
   double mutationProbability;
-  double inversionProbability;
   int eliteStrategyAmount;
   String gradeStrategy;
   String selection;
@@ -31,7 +29,6 @@ class GeneticAlgorithmCreate {
       required this.selectionProbability,
       required this.crossProbability,
       required this.mutationProbability,
-      required this.inversionProbability,
       required this.eliteStrategyAmount,
       required this.gradeStrategy,
       required this.selection,
@@ -60,20 +57,12 @@ class GeneticAlgorithmCreate {
   Cross crossChoose(cross) {
     late Cross crossChoose;
     switch (cross) {
-      case Cross.ONE_POINT_CROSS:
-        crossChoose = OnePointCross(crossProbability);
+      case Cross.ARITHMETIC_CROSS:
+        crossChoose = ArithmeticCross(crossProbability);
         break;
 
-      case Cross.TWO_POINTS_CROSS:
-        crossChoose = TwoPointsCross(crossProbability);
-        break;
-
-      case Cross.THREE_POINTS_CROSS:
-        crossChoose = ThreePointsCross(crossProbability);
-        break;
-
-      case Cross.HOMOGENEOUS_CROSS:
-        crossChoose = HomogeneousCross(crossProbability);
+      case Cross.HEURISTIC_CROSS:
+        crossChoose = HeuristicCross(crossProbability);
         break;
     }
 
@@ -83,16 +72,8 @@ class GeneticAlgorithmCreate {
   Mutation mutationChoose(mutation) {
     late Mutation mutationChoose;
     switch (mutation) {
-      case Mutation.ONE_POINT_MUTATION:
-        mutationChoose = OnePointMutation(mutationProbability);
-        break;
-
-      case Mutation.TWO_POINTS_MUTATION:
-        mutationChoose = TwoPointsMutation(mutationProbability);
-        break;
-
-      case Mutation.EDGE_MUTATION:
-        mutationChoose = EdgeMutation(mutationProbability);
+      case Mutation.UNIFORM_MUTATION:
+        mutationChoose = UniformMutation(mutationProbability);
         break;
     }
 
@@ -115,7 +96,6 @@ class GeneticAlgorithmCreate {
   }
 
   Result createGeneticAlgorithm() {
-    var inversion = Inversion(inversionProbability);
     var eliteStrategy = EliteStrategy(eliteStrategyAmount);
     var selection = chooseSelection(this.selection);
     var cross = crossChoose(this.cross);
@@ -125,7 +105,6 @@ class GeneticAlgorithmCreate {
 
     return GeneticAlgorithm(
             epochsAmount: epochsAmount,
-            inversion: inversion,
             eliteStrategy: eliteStrategy,
             selection: selection,
             cross: cross,

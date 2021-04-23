@@ -12,39 +12,38 @@ class EliteStrategy {
         population.startRange,
         population.endRange,
         population.populationAmount,
-        population.chromosomeSize,
-        population.getChromosomes());
+        population.chromosomes);
 
     population
-        .getChromosomes()
-        .sort((a, b) => b.getGrade().compareTo(a.getGrade()));
+        .chromosomes
+        .sort((a, b) => b.grade.compareTo(a.grade));
 
     for (var i = 0; i < eliteStrategyAmount; i++) {
-      eliteChromosome.add(population.getChromosomes()[i]);
+      eliteChromosome.add(population.chromosomes[i]);
     }
 
-    var chromosomes = populationWithoutElite.getChromosomes();
+    var chromosomes = populationWithoutElite.chromosomes;
 
     for (var i = 0; i < eliteChromosome.length; i++) {
       var chromosome = chromosomes.firstWhere(
-          (element) => element.getGrade() == eliteChromosome[i].getGrade());
+          (element) => element.grade == eliteChromosome[i].grade);
       chromosomes.remove(chromosome);
     }
 
-    populationWithoutElite.setChromosomes(chromosomes);
-    populationWithoutElite.setPopulationAmount(chromosomes.length);
+    populationWithoutElite.chromosomes = chromosomes;
+    populationWithoutElite.populationAmount = chromosomes.length;
 
     return populationWithoutElite;
   }
 
   void setBestToPopulation(Population population) {
-    var chromosomes = population.getChromosomes();
+    var chromosomes = population.chromosomes;
     for (var i = 0; i < eliteChromosome.length; i++) {
       chromosomes.add(eliteChromosome[i]);
     }
-    population.setChromosomes(chromosomes);
-    population.setPopulationAmount(
-        population.getPopulationAmount() + eliteChromosome.length);
+    population.chromosomes = chromosomes;
+    population.populationAmount =
+        population.populationAmount + eliteChromosome.length;
     eliteChromosome = [];
   }
 }

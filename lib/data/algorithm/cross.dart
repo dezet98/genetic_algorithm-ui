@@ -9,7 +9,10 @@ abstract class Cross {
   static const ARITHMETIC_CROSS = 'arithmetic_cross';
   static const HEURISTIC_CROSS = 'heuristic_cross';
 
-  Population cross(Population population, int populationSizeWithoutElite, GradeStrategy gradeStrategy);
+  static get items => [ARITHMETIC_CROSS, HEURISTIC_CROSS];
+
+  Population cross(Population population, int populationSizeWithoutElite,
+      GradeStrategy gradeStrategy);
 }
 
 class ArithmeticCross implements Cross {
@@ -19,7 +22,8 @@ class ArithmeticCross implements Cross {
   ArithmeticCross(this.crossProbability);
 
   @override
-  Population cross(Population population, int populationSizeWithoutElite, GradeStrategy gradeStrategy) {
+  Population cross(Population population, int populationSizeWithoutElite,
+      GradeStrategy gradeStrategy) {
     var newPopulation = Population.fromPopulation(
         population.startRange,
         population.endRange,
@@ -70,7 +74,8 @@ class HeuristicCross implements Cross {
   HeuristicCross(this.crossProbability);
 
   @override
-  Population cross(Population population, int populationSizeWithoutElite, GradeStrategy gradeStrategy) {
+  Population cross(Population population, int populationSizeWithoutElite,
+      GradeStrategy gradeStrategy) {
     var newPopulation = Population.fromPopulation(
         population.startRange,
         population.endRange,

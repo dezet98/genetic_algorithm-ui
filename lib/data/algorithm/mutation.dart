@@ -1,8 +1,11 @@
 import 'dart:math';
+
 import 'population.dart';
 
 abstract class Mutation {
   static const UNIFORM_MUTATION = 'uniform_mutation';
+
+  static get items => [UNIFORM_MUTATION];
 
   Population mutation(Population population);
 }

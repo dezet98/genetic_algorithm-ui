@@ -7,7 +7,10 @@ import 'package:genetic_algorithms/blocs/specific_blocs/fields/select_field_bloc
 import 'package:genetic_algorithms/blocs/specific_blocs/result/result_save_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/save_to_file/save_to_file_bloc.dart';
 import 'package:genetic_algorithms/data/algorithm/connection.dart';
+import 'package:genetic_algorithms/data/algorithm/cross.dart';
+import 'package:genetic_algorithms/data/algorithm/mutation.dart';
 import 'package:genetic_algorithms/data/algorithm/result.dart';
+import 'package:genetic_algorithms/data/algorithm/selection.dart';
 import 'package:genetic_algorithms/shared/platforms.dart';
 import 'package:genetic_algorithms/shared/validators.dart';
 
@@ -85,25 +88,50 @@ class AlgorithmParamsFormBloc extends FormBloc<Result> {
             initialValue: 3,
           ),
           SelectFieldBloc<String>(
-            items: ['best', 'roulette', 'tournament'],
-            initialValue: 'best',
+            items: Selection.items,
+            getName: (v) {
+              switch (v) {
+                case Selection.BEST:
+                  return "Best";
+                case Selection.ROULETTE:
+                  return "Roulette";
+                case Selection.TOURNAMENT:
+                  return "Tournament";
+                default:
+                  return "-";
+              }
+            },
+            initialValue: Selection.BEST,
             key: FormItems.selection,
             labelText: "Choose selection method",
           ),
           SelectFieldBloc<String>(
-            items: [
-              'arithmetic_cross',
-              'heuristic_cross'
-            ],
-            initialValue: 'arithmetic_cross',
+            items: Cross.items,
+            getName: (v) {
+              switch (v) {
+                case Cross.ARITHMETIC_CROSS:
+                  return "Arithmetic";
+                case Cross.HEURISTIC_CROSS:
+                  return "Heuristic";
+                default:
+                  return "-";
+              }
+            },
+            initialValue: Cross.ARITHMETIC_CROSS,
             key: FormItems.cross,
             labelText: "Choose cross method",
           ),
           SelectFieldBloc<String>(
-            items: [
-              'uniform_mutation'
-            ],
-            initialValue: 'uniform_mutation',
+            items: Mutation.items,
+            getName: (v) {
+              switch (v) {
+                case Mutation.UNIFORM_MUTATION:
+                  return "Uniform";
+                default:
+                  return "-";
+              }
+            },
+            initialValue: Mutation.UNIFORM_MUTATION,
             key: FormItems.mutation,
             labelText: "Choose mutation method",
           ),

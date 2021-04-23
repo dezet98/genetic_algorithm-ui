@@ -5,9 +5,11 @@ class SelectFieldBloc<T> extends FieldBloc<T> {
   List<T> items;
   Icon? icon;
   String? labelText;
+  String Function(T) getName;
 
   SelectFieldBloc({
     required this.items,
+    required this.getName,
     required T initialValue,
     dynamic? key,
     String? Function(T?)? validator,

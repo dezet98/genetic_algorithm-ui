@@ -123,7 +123,7 @@ class FieldBlocBuilder {
               items: bloc.items
                   .map((String value) => DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(bloc.getName(value)),
                       ))
                   .toList(),
             );

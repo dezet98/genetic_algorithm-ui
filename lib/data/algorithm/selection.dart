@@ -8,6 +8,8 @@ abstract class Selection {
   static const ROULETTE = 'roulette';
   static const TOURNAMENT = 'tournament';
 
+  static get items => [BEST, ROULETTE, TOURNAMENT];
+
   Population selection(Population population);
 
   static Chromosome getBest(List<Chromosome> chromosomes) {
@@ -24,9 +26,7 @@ class Best implements Selection {
 
   @override
   Population selection(Population population) {
-    population
-        .chromosomes
-        .sort((a, b) => b.grade.compareTo(a.grade));
+    population.chromosomes.sort((a, b) => b.grade.compareTo(a.grade));
 
     var selectionElements =
         (population.chromosomes.length * selectionProbability).toInt();
@@ -36,7 +36,7 @@ class Best implements Selection {
     }
 
     population.chromosomes = bestChromosome;
-    population.populationAmount  = bestChromosome.length;
+    population.populationAmount = bestChromosome.length;
 
     bestChromosome = [];
 
@@ -79,7 +79,7 @@ class Roulette implements Selection {
     }
 
     population.populationAmount = finalChromosomes.length;
-    population.chromosomes  = finalChromosomes;
+    population.chromosomes = finalChromosomes;
     return population;
   }
 }
@@ -100,7 +100,7 @@ class Tournament implements Selection {
       winningChromosomes = tournamentStage(winningChromosomes);
     }
 
-    population.populationAmount  = winningChromosomes.length;
+    population.populationAmount = winningChromosomes.length;
     population.chromosomes = winningChromosomes;
     return population;
   }

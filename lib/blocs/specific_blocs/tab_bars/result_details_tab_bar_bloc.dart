@@ -2,6 +2,7 @@ import 'package:genetic_algorithms/blocs/abstract/tab_bar/tab_bar_bloc.dart';
 import 'package:genetic_algorithms/ui/screens/result_details/charts/charts.dart';
 import 'package:genetic_algorithms/ui/screens/result_details/details/details_tab.dart';
 import 'package:genetic_algorithms/ui/screens/result_details/info/info.dart';
+import 'package:genetic_algorithms/ui/screens/result_details/params/params.dart';
 import 'package:genetic_algorithms/ui/screens/result_details/result_details_screen.dart';
 
 class ResultDetailsTabBarBloc extends TabBarBloc {
@@ -11,6 +12,8 @@ class ResultDetailsTabBarBloc extends TabBarBloc {
       : super(
           [
             InfoTab(args.algorithmResult),
+            if (args.algorithmResult.algorithmParams != null)
+              ParamsTab(args.algorithmResult.algorithmParams!),
             ChartsTab(
               averageInEpochs: args.averageInEpochs,
               bestInEpochs: args.bestInEpochs,

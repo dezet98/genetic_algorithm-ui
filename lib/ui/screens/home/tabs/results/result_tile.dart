@@ -6,6 +6,7 @@ import 'package:genetic_algorithms/blocs/abstract/local_database_get/local_datab
 import 'package:genetic_algorithms/blocs/specific_blocs/result/result_delete_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/result/results_get_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/router/router_bloc.dart';
+import 'package:genetic_algorithms/data/models/algorithm_params.dart';
 import 'package:genetic_algorithms/data/models/algorithm_result.dart';
 import 'package:genetic_algorithms/shared/extensions.dart';
 import 'package:genetic_algorithms/shared/routes.dart';
@@ -19,34 +20,40 @@ class ResultTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        title:
-            Text("nr ${_algorithmResult.resultId} - ${_algorithmResult.best}"),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return GestureDetector(
+      onTap: () => goToResultDetails(context),
+      behavior: HitTestBehavior.opaque,
+      child: Card(
+        child: Column(
           children: [
-            Text("Time: " + _algorithmResult.creationTime.toString()),
-            Text(_algorithmResult.algorithmParams!.epochsAmount.toString() +
-                " epochs"),
-            Text(_algorithmResult.algorithmParams!.populationAmount.toString() +
-                " population"),
-            Text("Execution time: " +
-                _algorithmResult.algorithmTime +
-                " seconds"),
+            ListTile(
+              title: Text(
+                  "nr ${_algorithmResult.resultId} - ${_algorithmResult.best}"),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Time: " + _algorithmResult.creationTime.toString()),
+                  Text("Execution time: " +
+                      _algorithmResult.algorithmTime +
+                      " seconds"),
+                ],
+              ),
+              trailing: BlocConsumer(
+                bloc: context.bloc<ResultDeleteBloc>(),
+                listener: resultDeleteBlocListener,
+                builder: (context, state) {
+                  return IconButton(
+                    icon: Icon(Icons.delete_forever_outlined),
+                    onPressed: () => deleteItem(context),
+                  );
+                },
+              ),
+              onTap: () => goToResultDetails(context),
+            ),
+            if (_algorithmResult.algorithmParams != null)
+              buildChips(_algorithmResult.algorithmParams!)
           ],
         ),
-        trailing: BlocConsumer(
-          bloc: context.bloc<ResultDeleteBloc>(),
-          listener: resultDeleteBlocListener,
-          builder: (context, state) {
-            return IconButton(
-              icon: Icon(Icons.delete_forever_outlined),
-              onPressed: () => deleteItem(context),
-            );
-          },
-        ),
-        onTap: () => goToResultDetails(context),
       ),
     );
   }
@@ -60,6 +67,32 @@ class ResultTile extends StatelessWidget {
       icon: Icon(Icons.delete_forever_outlined),
       onPressed: () => deleteItem(context),
     );
+  }
+
+  Widget buildChips(AlgorithmParams algorithmParams) {
+    return Wrap(
+      children: [
+        buildChip("Population(${algorithmParams.populationAmount})"),
+        buildChip("Epochs(${algorithmParams.epochsAmount})"),
+        buildChip(
+            "<${algorithmParams.startRange}, ${algorithmParams.endRange}>"),
+        buildChip(algorithmParams.cross.toString() +
+            "(${algorithmParams.crossProbability * 100}%)"),
+        buildChip(algorithmParams.selection.toString() +
+            "(${algorithmParams.selectionProbability * 100}%)"),
+        buildChip(algorithmParams.mutation.toString() +
+            "(${algorithmParams.mutationProbability * 100}%)"),
+        buildChip("EliteStrategy(${algorithmParams.eliteStrategyAmount})"),
+        buildChip("GradeStratefy(${algorithmParams.gradeStrategy})"),
+      ],
+      alignment: WrapAlignment.start,
+      spacing: 10.0,
+      runSpacing: -10.0,
+    );
+  }
+
+  Widget buildChip(String labelText) {
+    return Chip(label: Text(labelText));
   }
 
   void resultDeleteBlocListener(

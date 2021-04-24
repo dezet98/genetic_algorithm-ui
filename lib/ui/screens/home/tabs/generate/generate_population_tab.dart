@@ -5,7 +5,6 @@ import 'package:genetic_algorithms/blocs/abstract/local_database_save/local_data
 import 'package:genetic_algorithms/blocs/specific_blocs/forms/algorithm_params_form_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/result/result_save_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/router/router_bloc.dart';
-import 'package:genetic_algorithms/data/algorithm/result.dart';
 import 'package:genetic_algorithms/shared/extensions.dart';
 import 'package:genetic_algorithms/shared/routes.dart';
 import 'package:genetic_algorithms/ui/components/bar_item.dart';
@@ -40,15 +39,15 @@ class GeneratePopulationTab extends TabItem {
     if (state is own.FormSubmitFailureState) {
       CustomSnackBar.simpleShow(context, "Form failure, try again", "Close");
     } else if (state is own.FormSubmitSuccessState) {
-      Result result = state.result;
+      AlgorithmParamsFormBlocData data = state.result;
       context.bloc<RouterBloc>().add(
             RouterNavigateToEvent(
               RouteName.RESULTS_DETAILS,
               routeArgs: ResultDetailsScreenArgs(
-                algorithmResult: result.algorithmResult,
-                averageInEpochs: result.averageInEpochs(null),
-                bestInEpochs: result.bestInEpochs(null),
-                standardDeviations: result.standardDeviations(null),
+                algorithmResult: data.algorithmResult,
+                averageInEpochs: data.averageInEpochs,
+                bestInEpochs: data.bestInEpochs,
+                standardDeviations: data.standardDeviations,
               ),
             ),
           );

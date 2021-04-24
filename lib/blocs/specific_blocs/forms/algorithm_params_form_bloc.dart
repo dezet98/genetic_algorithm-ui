@@ -12,6 +12,10 @@ import 'package:genetic_algorithms/data/algorithm/mutation.dart';
 import 'package:genetic_algorithms/data/algorithm/result.dart';
 import 'package:genetic_algorithms/data/algorithm/selection.dart';
 import 'package:genetic_algorithms/data/models/algorithm_params.dart';
+import 'package:genetic_algorithms/data/models/algorithm_result.dart';
+import 'package:genetic_algorithms/data/models/average_in_epoch.dart';
+import 'package:genetic_algorithms/data/models/best_in_epoch.dart';
+import 'package:genetic_algorithms/data/models/standard_deviation.dart';
 import 'package:genetic_algorithms/shared/platforms.dart';
 import 'package:genetic_algorithms/shared/validators.dart';
 
@@ -31,7 +35,17 @@ enum FormItems {
   mutation,
 }
 
-class AlgorithmParamsFormBloc extends FormBloc<Result> {
+class AlgorithmParamsFormBlocData {
+  AlgorithmResult algorithmResult;
+  List<BestInEpoch> bestInEpochs;
+  List<AverageInEpoch> averageInEpochs;
+  List<StandardDeviation> standardDeviations;
+
+  AlgorithmParamsFormBlocData(this.algorithmResult, this.averageInEpochs,
+      this.bestInEpochs, this.standardDeviations);
+}
+
+class AlgorithmParamsFormBloc extends FormBloc<AlgorithmParamsFormBlocData> {
   ResultSaveBloc _resultSaveBloc;
   SaveToFileBloc _saveToFileBloc;
 
@@ -143,7 +157,8 @@ class AlgorithmParamsFormBloc extends FormBloc<Result> {
         ]);
 
   @override
-  Future<Result> onSubmit(Map<dynamic, Object?> results) async {
+  Future<AlgorithmParamsFormBlocData> onSubmit(
+      Map<dynamic, Object?> results) async {
     AlgorithmParams params = getParams(results);
     Result computeFuture = await computeOnMainIsolate(params);
 
@@ -155,7 +170,15 @@ class AlgorithmParamsFormBloc extends FormBloc<Result> {
     _saveToFileBloc
         .add(SaveToFileDataEvent(computeFuture.chromosomesInEachEpoch));
 
-    return computeFuture;
+    AlgorithmResult algorithmResult = computeFuture.algorithmResult;
+    algorithmResult.algorithmParams = params;
+
+    return AlgorithmParamsFormBlocData(
+      algorithmResult,
+      computeFuture.averageInEpochs(null),
+      computeFuture.bestInEpochs(null),
+      computeFuture.standardDeviations(null),
+    );
   }
 }
 

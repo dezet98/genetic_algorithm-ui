@@ -10,19 +10,23 @@ class InfoTab extends TabItem {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Column(
+        children: [
+          for (var i in getTiles()) Column(children: [Divider(), i]),
+          Divider(),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> getTiles() => [
         buildTile("Creation date", algorithmResult.creationTime.toString()),
-        buildTile("Population",
-            algorithmResult.algorithmParams!.populationAmount.toString()),
-        buildTile(
-            "Epochs", algorithmResult.algorithmParams!.epochsAmount.toString()),
         buildTile("Best result", algorithmResult.best.toString()),
         buildTile("Result average", algorithmResult.bestAverage.toString()),
         buildTile("Time", algorithmResult.algorithmTime),
-      ],
-    );
-  }
+      ];
 
   Widget buildTile(String title, String subtitle) {
     return ListTile(
@@ -35,5 +39,5 @@ class InfoTab extends TabItem {
   Widget getIcon(BuildContext context) => Icon(Icons.bar_chart_sharp);
 
   @override
-  String getLabel(BuildContext context) => "Basic Info";
+  String getLabel(BuildContext context) => "Result Info";
 }

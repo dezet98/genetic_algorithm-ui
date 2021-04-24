@@ -6,6 +6,14 @@ abstract class GradeStrategy {
   static const MAXIMAL_GRADE = 'maximal_grade';
   static const MINIMAL_GRADE = 'minimal_grade';
 
+  static String text(bool isMaximal) {
+    return isMaximal ? "Maximal" : "Minimal";
+  }
+
+  static String shortText(bool isMaximal) {
+    return isMaximal ? "max" : "min";
+  }
+
   void evaluate(Population population);
 }
 
@@ -16,8 +24,8 @@ class MaximalGrade implements GradeStrategy {
       var x = population.chromosomes[i].firstGenes;
       var y = population.chromosomes[i].secondGenes;
 
-      population
-          .chromosomes[i].grade = sin(x + y) + pow((x - y), 2) - 1.5 * x + 2.5 * y + 1;
+      population.chromosomes[i].grade =
+          sin(x + y) + pow((x - y), 2) - 1.5 * x + 2.5 * y + 1;
     }
   }
 }
@@ -30,9 +38,8 @@ class MinimalGrade implements GradeStrategy {
       var x = population.chromosomes[i].firstGenes;
       var y = population.chromosomes[i].secondGenes;
 
-      population
-          .chromosomes[i]
-          .grade = (sin(x + y) + pow((x - y), 2) - 1.5 * x + 2.5 * y + 1);
+      population.chromosomes[i].grade =
+          (sin(x + y) + pow((x - y), 2) - 1.5 * x + 2.5 * y + 1);
 
       if (population.chromosomes[i].grade < min) {
         min = population.chromosomes[i].grade;

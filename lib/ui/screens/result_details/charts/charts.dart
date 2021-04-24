@@ -75,6 +75,7 @@ class ChartsTab extends TabItem {
         series: bestInEpochsSeries,
         tooltipBehavior: TooltipBehavior(enable: isTooltipEnable),
         enableAxisAnimation: true,
+        onAxisLabelTapped: (axisLabelTapArgs) {},
         primaryXAxis: isPrimaryXAxis
             ? NumericAxis(title: AxisTitle(text: 'Epoch'))
             : null,
@@ -135,7 +136,7 @@ class ChartsTab extends TabItem {
   List<LineSeries<StandardDeviation, num>> get standardDeviationSeries =>
       getDefaultData(
         dataSource: standardDeviations!,
-        xValueMapper: (StandardDeviation standardDeviation, int) =>
+        xValueMapper: (StandardDeviation standardDeviation, _) =>
             standardDeviation.epoch,
         yValueMapper: (StandardDeviation standardDeviation, _) =>
             standardDeviation.value,
@@ -182,7 +183,7 @@ class ChartsTab extends TabItem {
     context.bloc<RouterBloc>().add(
           RouterNavigateToEvent(
             RouteName.CHART_SCREEN,
-            routeArgs: ChartScreenArgs(chart: chart),
+            routeArgs: ChartScreenArgs.chart(chart: chart),
           ),
         );
   }

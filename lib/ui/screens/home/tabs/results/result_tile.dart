@@ -6,6 +6,7 @@ import 'package:genetic_algorithms/blocs/abstract/local_database_get/local_datab
 import 'package:genetic_algorithms/blocs/specific_blocs/result/result_delete_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/result/results_get_bloc.dart';
 import 'package:genetic_algorithms/blocs/specific_blocs/router/router_bloc.dart';
+import 'package:genetic_algorithms/data/algorithm/grade_strategy.dart';
 import 'package:genetic_algorithms/data/models/algorithm_params.dart';
 import 'package:genetic_algorithms/data/models/algorithm_result.dart';
 import 'package:genetic_algorithms/shared/extensions.dart';
@@ -20,41 +21,37 @@ class ResultTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => goToResultDetails(context),
-      behavior: HitTestBehavior.opaque,
-      child: Card(
-        child: Column(
-          children: [
-            ListTile(
-              title: Text(
-                  "nr ${_algorithmResult.resultId} - ${_algorithmResult.best}"),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Time: " + _algorithmResult.creationTime.toString()),
-                  Text("Execution time: " +
-                      _algorithmResult.algorithmTime +
-                      " seconds"),
-                ],
-              ),
-              trailing: BlocConsumer(
-                bloc: context.bloc<ResultDeleteBloc>(),
-                listener: resultDeleteBlocListener,
-                builder: (context, state) {
-                  return IconButton(
-                    icon: Icon(Icons.delete_forever_outlined),
-                    onPressed: () => deleteItem(context),
-                  );
-                },
-              ),
-              onTap: () => goToResultDetails(context),
-            ),
-            if (_algorithmResult.algorithmParams != null)
-              buildChips(_algorithmResult.algorithmParams!)
-          ],
+    return Column(
+      children: [
+        ListTile(
+          leading: CircleAvatar(
+            child: Text("${_algorithmResult.resultId}"),
+          ),
+          title: Text("${_algorithmResult.best}"),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Time: " + _algorithmResult.creationTime.toString()),
+              Text("Execution time: " +
+                  _algorithmResult.algorithmTime +
+                  " seconds"),
+            ],
+          ),
+          trailing: BlocConsumer(
+            bloc: context.bloc<ResultDeleteBloc>(),
+            listener: resultDeleteBlocListener,
+            builder: (context, state) {
+              return IconButton(
+                icon: Icon(Icons.delete_forever_outlined),
+                onPressed: () => deleteItem(context),
+              );
+            },
+          ),
+          onTap: () => goToResultDetails(context),
         ),
-      ),
+        if (_algorithmResult.algorithmParams != null)
+          buildChips(_algorithmResult.algorithmParams!)
+      ],
     );
   }
 
@@ -72,18 +69,30 @@ class ResultTile extends StatelessWidget {
   Widget buildChips(AlgorithmParams algorithmParams) {
     return Wrap(
       children: [
-        buildChip("Population(${algorithmParams.populationAmount})"),
-        buildChip("Epochs(${algorithmParams.epochsAmount})"),
+        buildChip("Population(${algorithmParams.populationAmount})",
+            color: Colors.red.shade50),
+        buildChip("Epochs(${algorithmParams.epochsAmount})",
+            color: Colors.blue.shade50),
         buildChip(
-            "<${algorithmParams.startRange}, ${algorithmParams.endRange}>"),
-        buildChip(algorithmParams.cross.toString() +
-            "(${algorithmParams.crossProbability * 100}%)"),
-        buildChip(algorithmParams.selection.toString() +
-            "(${algorithmParams.selectionProbability * 100}%)"),
-        buildChip(algorithmParams.mutation.toString() +
-            "(${algorithmParams.mutationProbability * 100}%)"),
-        buildChip("EliteStrategy(${algorithmParams.eliteStrategyAmount})"),
-        buildChip("GradeStratefy(${algorithmParams.gradeStrategy})"),
+            "<${algorithmParams.startRange}, ${algorithmParams.endRange}>",
+            color: Colors.orange.shade50),
+        buildChip(
+            algorithmParams.cross.toString() +
+                "(${algorithmParams.crossProbability * 100}%)",
+            color: Colors.pink.shade50),
+        buildChip(
+            algorithmParams.selection.toString() +
+                "(${algorithmParams.selectionProbability * 100}%)",
+            color: Colors.green.shade50),
+        buildChip(
+            algorithmParams.mutation.toString() +
+                "(${algorithmParams.mutationProbability * 100}%)",
+            color: Colors.yellow.shade50),
+        buildChip("EliteStrategy(${algorithmParams.eliteStrategyAmount})",
+            color: Colors.purple.shade50),
+        buildChip(
+            "GradeStratefy(${GradeStrategy.text(algorithmParams.gradeStrategy)})",
+            color: Colors.amber.shade50),
       ],
       alignment: WrapAlignment.start,
       spacing: 10.0,
@@ -91,8 +100,11 @@ class ResultTile extends StatelessWidget {
     );
   }
 
-  Widget buildChip(String labelText) {
-    return Chip(label: Text(labelText));
+  Widget buildChip(String labelText, {Color? color}) {
+    return Chip(
+      label: Text(labelText),
+      backgroundColor: color,
+    );
   }
 
   void resultDeleteBlocListener(

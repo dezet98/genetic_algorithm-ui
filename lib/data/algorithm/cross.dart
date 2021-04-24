@@ -11,6 +11,28 @@ abstract class Cross {
 
   static get items => [ARITHMETIC_CROSS, HEURISTIC_CROSS];
 
+  static String text(String code) {
+    switch (code) {
+      case ARITHMETIC_CROSS:
+        return "Arithmetic cross";
+      case HEURISTIC_CROSS:
+        return "Heuristic cross";
+      default:
+        return "-";
+    }
+  }
+
+  static String shortText(String code) {
+    switch (code) {
+      case ARITHMETIC_CROSS:
+        return "Art";
+      case HEURISTIC_CROSS:
+        return "Heu";
+      default:
+        return "-";
+    }
+  }
+
   Population cross(Population population, int populationSizeWithoutElite,
       GradeStrategy gradeStrategy);
 }

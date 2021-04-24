@@ -7,6 +7,24 @@ abstract class Mutation {
 
   static get items => [UNIFORM_MUTATION];
 
+  static String text(String code) {
+    switch (code) {
+      case UNIFORM_MUTATION:
+        return "Uniform mutation";
+      default:
+        return "-";
+    }
+  }
+
+  static String shortText(String code) {
+    switch (code) {
+      case UNIFORM_MUTATION:
+        return "Un";
+      default:
+        return "-";
+    }
+  }
+
   Population mutation(Population population);
 }
 

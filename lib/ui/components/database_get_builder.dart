@@ -84,6 +84,7 @@ class DatabaseGetBuilder extends StatelessWidget {
 
   static Widget refreshButton(void Function() refreshAction) {
     return FloatingActionButton(
+      heroTag: "refresh",
       child: Icon(Icons.refresh),
       onPressed: () {
         refreshAction();

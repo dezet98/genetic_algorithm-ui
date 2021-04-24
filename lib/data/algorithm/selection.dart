@@ -8,7 +8,33 @@ abstract class Selection {
   static const ROULETTE = 'roulette';
   static const TOURNAMENT = 'tournament';
 
-  static get items => [BEST, ROULETTE, TOURNAMENT];
+  static List<String> get items => [BEST, ROULETTE, TOURNAMENT];
+
+  static String text(code) {
+    switch (code) {
+      case BEST:
+        return "Best";
+      case ROULETTE:
+        return "Roulette";
+      case TOURNAMENT:
+        return "Tournament";
+      default:
+        return '-';
+    }
+  }
+
+  static String shortText(code) {
+    switch (code) {
+      case BEST:
+        return "B";
+      case ROULETTE:
+        return "R";
+      case TOURNAMENT:
+        return "T";
+      default:
+        return '-';
+    }
+  }
 
   Population selection(Population population);
 

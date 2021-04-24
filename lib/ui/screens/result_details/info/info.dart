@@ -13,8 +13,10 @@ class InfoTab extends TabItem {
     return Column(
       children: [
         buildTile("Creation date", algorithmResult.creationTime.toString()),
-        buildTile("Population", algorithmResult.populationSize.toString()),
-        buildTile("Epochs", algorithmResult.epochsAmount.toString()),
+        buildTile("Population",
+            algorithmResult.algorithmParams!.populationAmount.toString()),
+        buildTile(
+            "Epochs", algorithmResult.algorithmParams!.epochsAmount.toString()),
         buildTile("Best result", algorithmResult.best.toString()),
         buildTile("Result average", algorithmResult.bestAverage.toString()),
         buildTile("Time", algorithmResult.algorithmTime),

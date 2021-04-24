@@ -4,19 +4,20 @@ import 'package:genetic_algorithms/data/local_database/database_model.dart';
 import 'package:genetic_algorithms/data/local_database/database_table.dart';
 import 'package:genetic_algorithms/shared/exceptions.dart';
 
+import 'algorithm_params.dart';
+
 class AlgorithmResult extends DatabaseModel {
   int? resultId;
-  int epochsAmount;
-  int populationSize;
   String algorithmTime;
   double best;
   DateTime creationTime;
   double bestAverage;
 
+  // local
+  AlgorithmParams? algorithmParams;
+
   AlgorithmResult(
-      {required this.epochsAmount,
-      required this.populationSize,
-      required this.algorithmTime,
+      {required this.algorithmTime,
       required this.best,
       required this.creationTime,
       required this.bestAverage,
@@ -26,8 +27,6 @@ class AlgorithmResult extends DatabaseModel {
 
   static List<DbColumn> _dbColumns = [
     dbResultId,
-    dbEpochsAmount,
-    dbPopulationSize,
     dbAlgorithmTime,
     dbBest,
     dbBestAverage,
@@ -37,10 +36,6 @@ class AlgorithmResult extends DatabaseModel {
   // dbColumns
   static DbColumn dbResultId = DbColumn(
       name: "RESULT_ID", columnType: DbColumnType.INT, isPrimaryKey: true);
-  static DbColumn dbEpochsAmount =
-      DbColumn(name: "EPOCHS_AMOUNT", columnType: DbColumnType.INT);
-  static DbColumn dbPopulationSize =
-      DbColumn(name: "POPULATION_SIZE", columnType: DbColumnType.INT);
   static DbColumn dbAlgorithmTime =
       DbColumn(name: "ALGORITHM_TIME", columnType: DbColumnType.STRING);
   static DbColumn dbBest =
@@ -52,8 +47,6 @@ class AlgorithmResult extends DatabaseModel {
 
   static DatabaseInsertAction saveToDatabase(AlgorithmResult algorithmResult) {
     return DatabaseInsertAction(tableName: dbTable.name, map: {
-      dbEpochsAmount.name: algorithmResult.epochsAmount,
-      dbPopulationSize.name: algorithmResult.populationSize,
       dbAlgorithmTime.name: algorithmResult.algorithmTime,
       dbBest.name: algorithmResult.best,
       dbBestAverage.name: algorithmResult.bestAverage,
@@ -64,16 +57,12 @@ class AlgorithmResult extends DatabaseModel {
   static AlgorithmResult fromDataBase(Map<String, Object?> map) {
     try {
       var resultId = map[dbResultId.name] as int;
-      var epochsAmount = map[dbEpochsAmount.name] as int;
-      var populationSize = map[dbPopulationSize.name] as int;
       var algorithmTime = (map[dbAlgorithmTime.name] as double).toString();
       var best = map[dbBest.name] as double;
       var bestAverage = map[dbBestAverage.name] as double;
       var creationTime = map[dbCreationTime.name] as String;
 
       return AlgorithmResult(
-          epochsAmount: epochsAmount,
-          populationSize: populationSize,
           algorithmTime: algorithmTime,
           best: best,
           bestAverage: bestAverage,

@@ -11,6 +11,7 @@ import 'package:genetic_algorithms/data/algorithm/cross.dart';
 import 'package:genetic_algorithms/data/algorithm/mutation.dart';
 import 'package:genetic_algorithms/data/algorithm/result.dart';
 import 'package:genetic_algorithms/data/algorithm/selection.dart';
+import 'package:genetic_algorithms/data/models/algorithm_params.dart';
 import 'package:genetic_algorithms/shared/platforms.dart';
 import 'package:genetic_algorithms/shared/validators.dart';
 
@@ -143,10 +144,13 @@ class AlgorithmParamsFormBloc extends FormBloc<Result> {
 
   @override
   Future<Result> onSubmit(Map<dynamic, Object?> results) async {
-    Result computeFuture = await computeOnMainIsolate(results);
+    AlgorithmParams params = getParams(results);
+    Result computeFuture = await computeOnMainIsolate(params);
 
     if (PlatformInfo.isNotWeb)
-      _resultSaveBloc.add(LocalDatabaseSaveDataEvent(computeFuture));
+      _resultSaveBloc.add(
+        LocalDatabaseSaveDataEvent(ResultSaveBlocArgs(computeFuture, params)),
+      );
 
     _saveToFileBloc
         .add(SaveToFileDataEvent(computeFuture.chromosomesInEachEpoch));
@@ -155,23 +159,40 @@ class AlgorithmParamsFormBloc extends FormBloc<Result> {
   }
 }
 
-Future<Result> computeOnMainIsolate(Map<dynamic, Object?> results) async {
+Future<Result> computeOnMainIsolate(AlgorithmParams results) async {
   return await compute(runAlgorithm, results);
 }
 
-Result runAlgorithm(Map<dynamic, Object?> results) {
+Result runAlgorithm(AlgorithmParams params) {
   return Connection().connect(
-    results[FormItems.startRange] as double,
-    results[FormItems.endRange] as double,
-    results[FormItems.populationAmount] as int,
-    results[FormItems.epochsAmount] as int,
-    results[FormItems.selectionProbability] as double,
-    results[FormItems.crossProbability] as double,
-    results[FormItems.mutationProbability] as double,
-    results[FormItems.eliteStrategyAmount] as int,
-    results[FormItems.gradeStrategy] as bool,
-    results[FormItems.selection] as String,
-    results[FormItems.cross] as String,
-    results[FormItems.mutation] as String,
+    params.startRange,
+    params.endRange,
+    params.populationAmount,
+    params.epochsAmount,
+    params.selectionProbability,
+    params.crossProbability,
+    params.mutationProbability,
+    params.eliteStrategyAmount,
+    params.gradeStrategy,
+    params.selection,
+    params.cross,
+    params.mutation,
+  );
+}
+
+AlgorithmParams getParams(Map<dynamic, Object?> results) {
+  return AlgorithmParams(
+    startRange: results[FormItems.startRange] as double,
+    endRange: results[FormItems.endRange] as double,
+    populationAmount: results[FormItems.populationAmount] as int,
+    epochsAmount: results[FormItems.epochsAmount] as int,
+    selectionProbability: results[FormItems.selectionProbability] as double,
+    crossProbability: results[FormItems.crossProbability] as double,
+    mutationProbability: results[FormItems.mutationProbability] as double,
+    eliteStrategyAmount: results[FormItems.eliteStrategyAmount] as int,
+    gradeStrategy: results[FormItems.gradeStrategy] as bool,
+    selection: results[FormItems.selection] as String,
+    cross: results[FormItems.cross] as String,
+    mutation: results[FormItems.mutation] as String,
   );
 }

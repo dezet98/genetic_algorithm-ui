@@ -27,8 +27,10 @@ class ResultTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Time: " + _algorithmResult.creationTime.toString()),
-            Text(_algorithmResult.epochsAmount.toString() + " epochs"),
-            Text(_algorithmResult.populationSize.toString() + " population"),
+            Text(_algorithmResult.algorithmParams!.epochsAmount.toString() +
+                " epochs"),
+            Text(_algorithmResult.algorithmParams!.populationAmount.toString() +
+                " population"),
             Text("Execution time: " +
                 _algorithmResult.algorithmTime +
                 " seconds"),

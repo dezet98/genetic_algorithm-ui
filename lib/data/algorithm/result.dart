@@ -29,8 +29,6 @@ class Result {
   });
 
   AlgorithmResult get algorithmResult => AlgorithmResult(
-        epochsAmount: epochsAmount,
-        populationSize: populationSize,
         algorithmTime: algorithmTime,
         best: best,
         bestAverage: bestAverage,
